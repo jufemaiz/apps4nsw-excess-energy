@@ -5,17 +5,14 @@
 			&rarr;
 			%a{:href=>"/energy/residential"} Residential
 			&rarr; Hot Water
-	.column.span-12
-		%h2 Total Energy
+	.column.span-8
+		%h2 Energy
 		%table
 			%thead
 				%tr
 					%th Local Council
 					%th
-						Total Energy
-						(
 						%abbr{:title=>"kilowatt hours"} kWh
-						)
 			%tbody
 				- @lgas.sort{|x,y| y.residential_controlled_load_energy <=> x.residential_controlled_load_energy}.each do |lga|
 					%tr
@@ -25,18 +22,15 @@
 						%td.number
 							= commify lga.residential_controlled_load_energy
 
-	.column.span-12.last
-		%h2 Total Energy per Resident
+	.column.span-8
+		%h2 Energy per Resident
 		%table
 			%thead
 				%tr
 					%th Local Council
 					%th
-						Total Energy
-						(
 						%abbr{:title=>"kilowatt hours"} kWh
-						)
-						per resident
+						= "/ resident"
 			%tbody
 				- @lgas.sort{|x,y| (y.residential_controlled_load_energy / y.population) <=> (x.residential_controlled_load_energy / x.population)}.each do |lga|
 					%tr
@@ -45,18 +39,15 @@
 								= lga.lga
 						%td.number
 							= commify lga.residential_controlled_load_energy / lga.population
-	.column.span-12
-		%h2 Total Energy per Customer
+	.column.span-8.last
+		%h2 Energy per Customer
 		%table
 			%thead
 				%tr
 					%th Local Council
 					%th
-						Total Energy
-						(
 						%abbr{:title=>"kilowatt hours"} kWh
-						)
-						per resident
+						= "/ Customer"
 			%tbody
 				- @lgas.sort{|x,y| (y.residential_controlled_load_energy / y.residential_customers) <=> (x.residential_controlled_load_energy / x.residential_customers)}.each do |lga|
 					%tr

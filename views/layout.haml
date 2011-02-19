@@ -60,7 +60,7 @@
 								%a{ :href => '/energy', :title => 'Browse energy comparisons' }
 									Total Energy
 							%li.sub-menu
-								%a{ :href => '/energy', :title => 'Browse energy comparisons', :accesskey => 'b' }
+								%a{ :href => '/energy/residential', :title => 'Browse energy comparisons', :accesskey => 'b' }
 									Residential Energy
 								%ul
 									%li.energy
@@ -85,15 +85,6 @@
 							%li.map
 								%a{ :href => '/map', :title => 'View map', :accesskey => 'm' }
 									Map
-					/ #globalSearch.column.span-10.last
-					/ 	%form{ :id => "globalSearchForm", :action => "/search", :method => "get" }
-					/ 		%fieldset
-					/ 			%legend Search for Local Government Area
-					/ 			%label{ :for => "globalSearchText" }
-					/ 				Search for asset&hellip;
-					/ 			%input{ :type => "text", :id => "globalSearchText", :name => "q", :value => "" }
-					/ 			%button{ :type => "submit" }
-					/ 				Search
 
 		<!-- Content -->
 		#content
@@ -103,6 +94,8 @@
 		#footer
 			.container
 				.column.span-24.last
-					Apps4NSW
+					An
+					%a{:href=>"http://data.nsw.gov.au/"} Apps4NSW
+					application
 		
 		<!--[if lte IE 8]></div><![endif]-->

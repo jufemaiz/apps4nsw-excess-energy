@@ -34,7 +34,7 @@
 						(
 						%abbr{:title=>"kilowatt hours"} kWh
 						)
-						per resident
+						per customer
 			%tbody
 				- @lgas.sort{|x,y| (y.total_business_energy / y.residential_customers) <=> (x.total_business_energy / x.residential_customers)}.each do |lga|
 					%tr

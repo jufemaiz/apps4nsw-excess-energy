@@ -309,7 +309,7 @@ end
 # SCSS Custom Styling
 # ----------------------------------
 
-get '/polygons.json'
+get '/polygons.json' do
     
     @row_number = 0
     @lgas_header = []
