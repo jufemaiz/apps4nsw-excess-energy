@@ -92,7 +92,8 @@
 					= commify @lga.residential_energy
 				%acronym{:title=>"kilowatt hours"} kWh
 			%dd
-				= commify @lga.residential_customers
+				%span.number
+					= commify @lga.residential_customers
 				customers
 			%dd
 				%span.number

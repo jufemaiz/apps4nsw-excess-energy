@@ -9,6 +9,7 @@ require 'haml'
 require 'sass'
 require 'coffee-script'
 require 'partials'
+require 'nokogiri'
 
 require 'lga-model'
 
@@ -38,7 +39,6 @@ get '/' do
     end
    end
 
-   # @polygons = JSON.parse(File.open('public/js/json/polygons.json').read)
    haml :index
 end
 
@@ -328,10 +328,32 @@ get '/polygons.json' do
         end
       end
      end
-     
-     
 
-    haml :polygon_json
+    # Read XML
+    f = File.open( "public/csv/LGA10aAust.kml" )
+    doc = Nokogiri::XML(f)
+    f.close
+    doc.remove_namespaces!
+
+    @placemarks = {}
+    @lgas_numbers = @lgas.map{|p| p.lga_code}
+    @row_number = 0
+    doc.xpath("//Placemark").each do |p|
+      @row_number = @row_number + 1
+      # if @row_number < 10
+        lga_code = p.xpath(".//Data[@name='LGA_CODE10']//value")[0].content.to_i
+        if @lgas_numbers.include? lga_code.to_i
+          @placemarks[lga_code] = p.xpath(".//coordinates").map{ |c|
+            c.content.split(' ').map{ |m|
+              [m.split(',')[1].to_f,m.split(',')[0].to_f]
+            }
+          }
+        end
+      # end
+    end
+    @placemarks = [@placemarks]
+
+    haml :polygon_json, :layout => false
 end
 
 # ----------------------------------

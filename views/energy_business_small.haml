@@ -12,10 +12,7 @@
 				%tr
 					%th Local Council
 					%th
-						Total Energy
-						(
 						%abbr{:title=>"kilowatt hours"} kWh
-						)
 			%tbody
 				- @lgas.sort{|x,y| y.small_business_energy <=> x.small_business_energy}.each do |lga|
 					%tr
@@ -32,11 +29,8 @@
 				%tr
 					%th Local Council
 					%th
-						Total Energy
-						(
 						%abbr{:title=>"kilowatt hours"} kWh
-						)
-						per customer
+						= "/ Customer"
 			%tbody
 				- @lgas.sort{|x,y| (y.small_business_energy / y.residential_customers) <=> (x.small_business_energy / x.residential_customers)}.each do |lga|
 					%tr

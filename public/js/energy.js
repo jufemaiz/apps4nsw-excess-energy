@@ -35,27 +35,26 @@ $(document).ready(function() {
     	}
     	el.toggleClass('collapsed');
   	});
-  	$.get('/js/json/polygons.json', function(data) {
-		var latlngs = [];
-		bounds = new google.maps.LatLngBounds();
-		$.each(data[0][lga['lga_code']], function(index,value){
-			var marker = new google.maps.LatLng(value[0], value[1]);
-			latlngs.push(marker);
-			bounds.extend(marker);
+  	$.getJSON('/polygons.json', function(data) {
+		$.each(data[0][lga['lga_code']+''], function(i,v) {
+			var latlngs = [];
+			bounds = new google.maps.LatLngBounds();
+			$.each(v, function(index,value){
+				var marker = new google.maps.LatLng(value[0], value[1]);
+				latlngs.push(marker);
+				bounds.extend(marker);
+			});
+
+			var lga_overlay = new google.maps.Polygon({
+		    	paths: latlngs,
+		    	strokeColor: "#498FCD",
+		    	strokeOpacity: 0.8,
+		    	strokeWeight: 2,
+		    	fillColor: "#498FCD",
+		    	fillOpacity: 0.35
+		  	});
+		  	lga_overlay.setMap(map);
+			map.fitBounds(bounds);
 		});
-		
-		var lga_overlay = new google.maps.Polygon({
-	    	paths: latlngs,
-	    	strokeColor: "#498FCD",
-	    	strokeOpacity: 0.8,
-	    	strokeWeight: 2,
-	    	fillColor: "#498FCD",
-	    	fillOpacity: 0.35
-	  	});
-	  	lga_overlay.setMap(map);
-		map.fitBounds(bounds);
-		console.log(map.getZoom());
-		map.setZoom(1+map.getZoom());
-		console.log(map.getZoom());
   	});
 });
