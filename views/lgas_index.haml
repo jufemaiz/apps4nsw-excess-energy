@@ -1,0 +1,51 @@
+.container
+	%h1 Local Government Areas
+	%p <a href="http://energy.com.au/">EnergyAustralia</a>'s (soon to be <a href="http://ausgrid.com.au/">Ausgrid</a>) local area contains certain Local Government Areas.
+	.column.span-24.last
+		%table
+			%thead
+				%tr
+					%th Name
+					%th
+						%acronym{:title=>"Australia Bureau of Statistics"} ABS
+						Code
+					%th Population
+					%th
+						Total Energy
+						(
+						%abbr{:title=>"kilowatt hours"} kWh
+						)
+					%th
+						Total Residential Energy
+						(
+						%abbr{:title=>"kilowatt hours"} kWh
+						)
+					%th
+						Total Business Energy
+						(
+						%abbr{:title=>"kilowatt hours"} kWh
+						)
+					%th
+						Total Energy per Person
+						(
+						%abbr{:title=>"kilowatt hours"} kWh
+						)
+						
+			%tbody
+				- @lgas.each do |lga|
+					%tr
+						%th
+							%a{:href=>"/lgas/#{lga.lga_code}"}
+								= lga.lga
+						%td
+							= lga.lga_code
+						%td.number
+							= commify lga.population
+						%td.number
+							= commify lga.total_energy
+						%td.number
+							= commify lga.total_residential_energy
+						%td.number
+							= commify lga.total_business_energy
+						%td.number
+							= commify (lga.total_energy / lga.population).to_i

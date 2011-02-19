@@ -1,0 +1,11 @@
+.container
+	%dl
+		%dt Header
+		%dd
+			= @lgas_header.inspect
+		%dt Rows
+		%dd
+			= @lgas.to_json
+		%dt Row Numbers
+		%dd
+			= @row_number

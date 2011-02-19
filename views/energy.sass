@@ -1,0 +1,304 @@
+body
+	margin: 0
+	padding: 0
+	position: relative
+	font-family: Helvetica, Arial, sans-serif
+	background: #eee
+	color: #222
+	height: 100%
+	font-size: 80%
+
+hr
+	margin: 0
+	padding: 0
+	background: #fff
+	
+a
+	img
+		border: none
+		
+h1
+	font-size: 200%
+h2
+	font-size: 150%
+	border-bottom: 2px solid #ddd
+	margin-bottom: 10px
+h3
+	font-size: 130%
+	margin: 5px 0
+h4
+	font-size: 115%
+h5
+	font-size: 135%
+
+.accessibility
+	display: none
+	
+#header
+	background: #333
+	color: #fff
+	a
+		color: #eee
+		text-decoration: none
+		&:active, &:hover, &:focus
+			color: #fff
+			text-decoration: underline
+	.container
+		height: 30px
+	#branding
+		height: 30px
+		background: #111
+		#brand
+			height: 100%
+			overflow: hidden
+			h1
+				height: 100%
+				margin: 0
+				font-size: 120%
+				line-height: 30px
+				a
+					height: 100%
+					display: block
+					img
+						overflow: hidden
+						padding-top: 5px
+		#globalUser
+			height: 30px
+			line-height: 30px
+			ul
+				list-style: none
+				margin: 0
+				padding: 0
+				text-align: right
+				li
+					margin: 0
+					padding: 0
+					display: inline-block
+					a, span
+						display: inline-block
+						padding: 0 6px
+						white-space: nowrap
+					&.sub-menu
+						padding-right: 20px
+						position: relative
+						&:hover ul, &:focus ul, &:active ul
+							display: block !important
+						ul
+							display: none
+							position: absolute
+							z-index: 10
+							right: 0
+							background: #111
+							padding: 0 2px 2px 2px
+							min-width: 150px
+							text-align: left
+							li
+								margin: 0
+								display: block
+								&.separator
+									border-top: 1px dashed #ccc
+								a
+									padding: 0 10px
+									line-height: 30px
+									display: block
+									&:hover, &:focus, &:active
+										background: #333
+
+	#navigation
+		height: 30px
+		margin: 0
+		padding: 0
+		#globalNav
+			height: 30px
+			line-height: 30px
+			ul
+				list-style: none
+				margin: 0
+				padding: 0
+				text-align: left
+				li
+					margin: 0 15px 0 0 
+					padding: 0
+					position: relative
+					display: inline-block
+					font-weight: bold
+					a, span
+						display: inline-block
+						padding: 0
+						white-space: nowrap
+					&.sub-menu
+						padding-right: 20px
+						position: relative
+						&:hover ul, &:focus ul, &:active ul
+							display: block !important
+						ul
+							display: none
+							position: absolute
+							z-index: 10
+							left: -10px
+							background: #fff
+							border: 1px solid #666
+							border-top: none
+							padding: 0
+							li
+								margin: 0
+								display: block
+								padding: 1px
+								&.separator
+									border-top: 1px dashed #ccc
+								a
+									padding: 0 10px
+									line-height: 30px
+									display: block
+									color: #498FCD
+									&:hover, &:focus, &:active
+										background: #498FCD
+										color: #fff
+					&.picklist
+						a
+							position: relative
+							span.count
+								display: none
+								position: absolute
+								top: 2px
+								right: -10px
+								padding: 2px 4px
+								font-size: 10px
+								line-height: 10px
+								font-weight: bold
+								color: #fff
+								background: red
+								-moz-border-radius: 4px
+								-webkit-border-radius: 4px
+								border-radius: 4px
+
+		#globalSearch
+			form
+				margin: 0
+				padding: 0
+				fieldset
+					border: 0
+					margin: 0
+					padding: 0
+					text-align: right
+					legend
+						display: none
+					label
+						position: absolute
+						color: #333
+						margin: 7px 0 0 30px
+						font-weight: normal
+					input
+						border: 0
+						margin: 3px 3px 3px 0
+						padding: 0 110px 0 30px
+						line-height: 25px
+						height: 25px
+						-moz-border-radius: 5px 0 0 5px
+						-webkit-border-radius: 5px 0 0 5px
+						border-radius: 5px 0 0 5px
+					select
+						position: relative
+						margin-left: -110px
+						width: 100px
+						border: 1px solid #fff
+						color: #498FCD
+						font-weight: bold
+						&:focus, &:hover, &:active
+							border-color: #498FCD
+							color: #111
+					button
+						background: #498FCD
+						border: none
+						color: #fff
+						height: 25px
+						padding-bottom: 2px
+						position: relative
+						top: 0
+						display: inline-block
+						-moz-border-radius: 0 5px 5px 0
+						-webkit-border-radius: 0 5px 5px 0
+						border-radius: 0 5px 5px 0
+#content
+	background: #fff
+	min-height: 500px
+	padding: 20px 0	
+	h1
+		margin-bottom: 20px
+	a
+		text-decoration: none
+		color: #498FCD
+		&:hover, &:active, &:focus
+			text-decoration: underline
+		&.picklist
+			&.added
+				background: transparent
+	table
+		border-top: 2px solid #ccc
+		border-bottom: 2px solid #ccc
+		thead
+			tr
+				th
+					background: #e9e9e9
+		tbody
+			tr
+				th,td
+					background: #fff
+					vertical-align: top
+					white-space: nowrap
+				th
+				td
+					&.number
+						text-align: right
+				&:nth-child(even)
+					th,td
+						background: #f9f9f9
+				&:hover
+					th,td
+					background: blue
+	span.number
+		font-size: 150%
+		font-weight: bold
+	#mapCanvas
+		display: none
+		height: 100px
+		position: relative
+		background: #eee
+		margin: 0
+		margin-bottom: 20px
+		#map
+			height: 100%
+			width: 100%
+		#controller
+			position: absolute
+			bottom: 0
+			padding: 5px 10px
+			background: #fff
+			color: #333
+			right: 50%
+			margin-right: -475px
+			cursor: pointer
+			font-weight: bold
+			
+
+
+#footer
+	padding: 20px 0
+	font-size: 85%
+	dl
+		position: relative
+		padding-left: 80px
+		margin-bottom: 10px
+		dt
+			position: absolute
+			width: 70px
+			left: 0
+		dd
+			display: inline-block
+	a
+		color: #999
+		text-decoration: none
+		&:hover, &:active, &:active
+			text-decoration: underline
+	.column.span-6.last
+		text-align: right
