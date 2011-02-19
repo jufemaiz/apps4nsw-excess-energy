@@ -3,3 +3,4 @@ json
 haml
 coffee-script
 fastercsv
+nokogiri
