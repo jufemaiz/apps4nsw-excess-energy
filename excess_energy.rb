@@ -46,6 +46,34 @@ end
 # LGA Browse
 # ----------------------------------
 
+get %r{/map(\/)?$} do  
+
+  @row_number = 0
+  @lgas_header = []
+  @lgas = []
+  
+  # For each line
+  IO.foreach("public/csv/2010-consumption.csv") do |f|
+    @row_number += 1
+    if @row_number == 1
+      FasterCSV.parse(f) do |row|
+        @lgas_header = row
+      end
+    elsif @row_number > 1
+      FasterCSV.parse(f) do |row|
+        @lgas.push LGA.new(@lgas_header,row)
+      end
+    end
+   end
+  
+  haml :map
+end
+
+
+# ----------------------------------
+# LGA Browse
+# ----------------------------------
+
 get %r{/lgas(\/)?$} do  
 
   @row_number = 0
@@ -109,6 +137,51 @@ end
 # ----------------------------------
 # LGA - Head to Head
 # ----------------------------------
+
+# ----------------------------------
+# LGA Show
+# ----------------------------------
+
+get %r{/lgas/(\d{5}),(\d{5})(\/.*)?$} do
+  
+  @row_number = 0
+  @lgas_header = []
+  @lgas = []
+  
+  # For each line
+  IO.foreach("public/csv/2010-consumption.csv") do |f|
+    @row_number += 1
+    if @row_number == 1
+      FasterCSV.parse(f) do |row|
+        @lgas_header = row
+      end
+    elsif @row_number > 1
+      FasterCSV.parse(f) do |row|
+        @lgas.push LGA.new(@lgas_header,row)
+      end
+    end
+  end
+  
+  @lgas.each do |lga|
+    if lga.lga_code == params[:captures][0].to_i
+      @lga1 = lga
+    elsif lga.lga_code == params[:captures][1].to_i
+      @lga2 = lga
+    end
+  end
+  
+  if @lga1.nil? && @lga2.nil?
+    haml :lgas_index
+  elsif @lga1.nil?
+    @lga = @lga2
+    haml :lgas_show
+  elsif @lga2.nil?
+    @lga = @lga1
+    haml :lgas_show
+  else
+    haml :lgas_head2head
+  end
+end
 
 # ----------------------------------
 # Energy - Total
@@ -309,51 +382,61 @@ end
 # SCSS Custom Styling
 # ----------------------------------
 
-get '/polygons.json' do
-    
-    @row_number = 0
-    @lgas_header = []
-    @lgas = []
 
-    # For each line
-    IO.foreach("public/csv/2010-consumption.csv") do |f|
-      @row_number += 1
-      if @row_number == 1
-        FasterCSV.parse(f) do |row|
-          @lgas_header = row
-        end
-      elsif @row_number > 1
-        FasterCSV.parse(f) do |row|
-          @lgas.push LGA.new(@lgas_header,row)
-        end
+get %r{/polygons(\/(\d{5}))?.json$} do  
+
+  @row_number = 0
+  @lgas_header = []
+  @lgas = []
+  @params = params
+
+  # For each line
+  IO.foreach("public/csv/2010-consumption.csv") do |f|
+    @row_number += 1
+    if @row_number == 1
+      FasterCSV.parse(f) do |row|
+        @lgas_header = row
       end
-     end
+    elsif @row_number > 1
+      FasterCSV.parse(f) do |row|
+        @lgas.push LGA.new(@lgas_header,row)
+      end
+    end
+   end
 
-    # Read XML
-    f = File.open( "public/csv/LGA10aAust.kml" )
-    doc = Nokogiri::XML(f)
-    f.close
-    doc.remove_namespaces!
+  # Read XML
+  f = File.open( "public/csv/LGA10aAust.kml" )
+  doc = Nokogiri::XML(f)
+  f.close
+  doc.remove_namespaces!
 
-    @placemarks = {}
-    @lgas_numbers = @lgas.map{|p| p.lga_code}
-    @row_number = 0
-    doc.xpath("//Placemark").each do |p|
-      @row_number = @row_number + 1
-      # if @row_number < 10
-        lga_code = p.xpath(".//Data[@name='LGA_CODE10']//value")[0].content.to_i
-        if @lgas_numbers.include? lga_code.to_i
+  @placemarks = {}
+  @lgas_numbers = @lgas.map{|p| p.lga_code}
+  @row_number = 0
+  doc.xpath("//Placemark").each do |p|
+    @row_number = @row_number + 1
+    # if @row_number < 10
+      lga_code = p.xpath(".//Data[@name='LGA_CODE10']//value")[0].content.to_i
+      if !params[:captures].nil? && !params[:captures][1].nil?
+        if params[:captures][1].to_i == lga_code
           @placemarks[lga_code] = p.xpath(".//coordinates").map{ |c|
             c.content.split(' ').map{ |m|
               [m.split(',')[1].to_f,m.split(',')[0].to_f]
             }
           }
         end
-      # end
-    end
-    @placemarks = [@placemarks]
+      elsif @lgas_numbers.include? lga_code.to_i
+        @placemarks[lga_code] = p.xpath(".//coordinates").map{ |c|
+          c.content.split(' ').map{ |m|
+            [m.split(',')[1].to_f,m.split(',')[0].to_f]
+          }
+        }
+      end
+    # end
+  end
+  @placemarks = [@placemarks]
 
-    haml :polygon_json, :layout => false
+  haml :polygon_json, :layout => false
 end
 
 # ----------------------------------

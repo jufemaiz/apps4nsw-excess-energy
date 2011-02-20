@@ -1,0 +1,85 @@
+- lga ||= nil
+- unless lga.nil?
+	%h2
+		%a{:href=>"/lgas/#{lga.lga_code}"}
+			= lga.lga
+	.mapCanvas
+		.map
+			Map Holder
+	%h3 People
+	%dl
+		%dt Population
+		%dd
+			%span.number.important
+				= commify lga.population
+		%dt Customers
+		%dd
+			%span.number
+				= commify lga.total_customers	
+
+	%h3 Energy
+	%dl
+		%dt
+			Total Energy (
+			%abbr{:title=>"kilowatt hours"} kWh
+			)
+		%dd
+			%span.number.important
+				= commify lga.total_energy
+		%dt
+			per Customer (
+			%abbr{:title=>"kilowatt hours"} kWh
+			= "/ customer )"
+		%dd
+			%span.number
+				= commify lga.total_energy / lga.total_customers
+		%dt
+			per Resident (
+			%abbr{:title=>"kilowatt hours"} kWh
+			= "/ resident )"
+		%dd
+			%span.number.important
+				= commify lga.total_energy / lga.population
+
+
+	%h3 Residential Energy
+	%dl
+		%dt
+			Residential Energy (
+			%abbr{:title=>"kilowatt hours"} kWh
+			)
+		%dd
+			%span.number.important
+				= commify lga.total_residential_energy
+		%dt
+			per Customer (
+			%abbr{:title=>"kilowatt hours"} kWh
+			= "/ customer )"
+		%dd
+			%span.number
+				= commify lga.total_residential_energy / lga.residential_customers
+		%dt
+			per Resident (
+			%abbr{:title=>"kilowatt hours"} kWh
+			= "/ resident )"
+		%dd
+			%span.number.important
+				= commify lga.total_residential_energy / lga.population
+
+
+	%h3 Business Energy
+	%dl
+		%dt
+			Business Energy (
+			%abbr{:title=>"kilowatt hours"} kWh
+			)
+		%dd
+			%span.number.important
+				= commify lga.total_business_energy
+		%dt
+			per Customer (
+			%abbr{:title=>"kilowatt hours"} kWh
+			= "/ customer )"
+		%dd
+			%span.number.important
+				= commify lga.total_business_energy / lga.total_business_customers
