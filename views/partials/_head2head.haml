@@ -13,12 +13,12 @@
 		%dd
 			%span.number.important
 				= commify lga.population
-			= partial(:'partials/percentage', :locals => {:value => lga.population, :max => lga_stats[:total][:population][:max], :min => lga_stats[:total][:population][:min]})
+			= partial(:'partials/percentage', :locals => { :value => lga.population, :details => lga_stats[:total][:population] } )
 		%dt Customers
 		%dd
 			%span.number
 				= commify lga.total_customers	
-			= partial(:'partials/percentage', :locals => {:value => lga.total_customers, :max => lga_stats[:total][:customers][:max], :min => lga_stats[:total][:customers][:min]})
+			= partial(:'partials/percentage', :locals => {:value => lga.total_customers, :details => lga_stats[:total][:population] } )
 
 	%h3 Energy
 	%dl
@@ -29,7 +29,7 @@
 		%dd
 			%span.number.important
 				= commify lga.total_energy
-			= partial(:'partials/percentage', :locals => {:value => lga.total_energy, :max => lga_stats[:total][:energy][:max], :min => lga_stats[:total][:energy][:min], :color => true})
+			= partial(:'partials/percentage', :locals => {:value => lga.total_energy, :details => lga_stats[:total][:energy], :color => true})
 		%dt
 			per Customer (
 			%abbr{:title=>"kilowatt hours"} kWh
@@ -37,15 +37,15 @@
 		%dd
 			%span.number
 				= commify lga.total_energy / lga.total_customers
-			= partial(:'partials/percentage', :locals => {:value => lga.total_energy / lga.total_customers, :max => lga_stats[:total][:per_customer][:max], :min => lga_stats[:total][:per_customer][:min], :color => true})
+			= partial(:'partials/percentage', :locals => {:value => lga.total_energy_per_customer, :details => lga_stats[:total][:per_customer], :color => true})
 		%dt
 			per Resident (
 			%abbr{:title=>"kilowatt hours"} kWh
 			= "/ resident )"
 		%dd
 			%span.number.important
-				= commify lga.total_energy / lga.population
-			= partial(:'partials/percentage', :locals => {:value => lga.total_energy / lga.population, :max => lga_stats[:total][:per_resident][:max], :min => lga_stats[:total][:per_resident][:min], :color => true})
+				= commify lga.total_energy_per_resident
+			= partial(:'partials/percentage', :locals => {:value => lga.total_energy_per_resident, :details => lga_stats[:total][:per_resident], :color => true})
 
 	%h3 Residential Energy
 	%dl
@@ -56,23 +56,23 @@
 		%dd
 			%span.number.important
 				= commify lga.total_residential_energy
-			= partial(:'partials/percentage', :locals => {:value => lga.total_residential_energy, :max => lga_stats[:residential][:total][:energy][:max], :min => lga_stats[:residential][:total][:energy][:min], :color => true})
+			= partial(:'partials/percentage', :locals => {:value => lga.total_residential_energy, :details => lga_stats[:residential][:total][:energy], :color => true})
 		%dt
 			(
 			%abbr{:title=>"kilowatt hours"} kWh
 			= "/ customer )"
 		%dd
 			%span.number
-				= commify lga.total_residential_energy / lga.residential_customers
-			= partial(:'partials/percentage', :locals => {:value => lga.total_residential_energy / lga.residential_customers, :max => lga_stats[:residential][:total][:per_customer][:max], :min => lga_stats[:residential][:total][:per_customer][:min], :color => true})
+				= commify lga.total_residential_energy_per_customer
+			= partial(:'partials/percentage', :locals => {:value => lga.total_residential_energy_per_customer, :details => lga_stats[:residential][:total][:per_customer], :color => true})
 		%dt
 			per Resident (
 			%abbr{:title=>"kilowatt hours"} kWh
 			= "/ resident )"
 		%dd
 			%span.number.important
-				= commify lga.total_residential_energy / lga.population
-			= partial(:'partials/percentage', :locals => {:value => lga.total_residential_energy / lga.population, :max => lga_stats[:residential][:total][:per_resident][:max], :min => lga_stats[:residential][:total][:per_resident][:min], :color => true})
+				= commify lga.total_residential_energy_per_resident
+			= partial(:'partials/percentage', :locals => {:value => lga.total_residential_energy_per_resident, :details => lga_stats[:residential][:total][:per_resident], :color => true})
 
 
 	%h3 Business Energy
@@ -84,12 +84,12 @@
 		%dd
 			%span.number.important
 				= commify lga.total_business_energy
-			= partial(:'partials/percentage', :locals => {:value => lga.total_business_energy, :max => lga_stats[:business][:total][:energy][:max], :min => lga_stats[:business][:total][:energy][:min], :color => true})
+			= partial(:'partials/percentage', :locals => {:value => lga.total_business_energy, :details => lga_stats[:business][:total][:energy], :color => true})
 		%dt
 			per Customer (
 			%abbr{:title=>"kilowatt hours"} kWh
 			= "/ customer )"
 		%dd
 			%span.number.important
-				= commify lga.total_business_energy / lga.total_business_customers
-			= partial(:'partials/percentage', :locals => {:value => lga.total_business_energy / lga.total_business_customers, :max => lga_stats[:business][:total][:per_customer][:max], :min => lga_stats[:business][:total][:per_customer][:min], :color => true })
+				= commify lga.total_business_energy_per_customer
+			= partial(:'partials/percentage', :locals => {:value => lga.total_business_energy_per_customer, :details => lga_stats[:business][:total][:per_customer], :color => true })

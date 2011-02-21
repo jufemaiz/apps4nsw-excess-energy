@@ -1,3 +1,5 @@
+$highlight_color: #2fb755
+
 body
 	margin: 0
 	padding: 0
@@ -150,9 +152,9 @@ h5
 									padding: 0 10px
 									line-height: 30px
 									display: block
-									color: #2fb755
+									color: $highlight_color
 									&:hover, &:focus, &:active
-										background: #2fb755
+										background: $highlight_color
 										color: #fff
 					&.picklist
 						a
@@ -202,13 +204,13 @@ h5
 						margin-left: -110px
 						width: 100px
 						border: 1px solid #fff
-						color: #2fb755
+						color: $highlight_color
 						font-weight: bold
 						&:focus, &:hover, &:active
-							border-color: #2fb755
+							border-color: $highlight_color
 							color: #111
 					button
-						background: #2fb755
+						background: $highlight_color
 						border: none
 						color: #fff
 						height: 25px
@@ -226,7 +228,7 @@ h5
 		margin-bottom: 20px
 	a
 		text-decoration: none
-		color: #2fb755
+		color: $highlight_color
 		&:hover, &:active, &:focus
 			text-decoration: underline
 		&.picklist
@@ -261,6 +263,81 @@ h5
 		font-weight: bold
 		&.important
 			font-size: 250%
+	form
+		margin: 0
+		padding: 0
+		fieldset
+			margin: 0
+			padding: 0
+			border: 0
+			legend
+				display: none
+			text-align: right
+			div
+				display: inline-block
+				input,select
+					display: inline-block
+		&#lgaH2H
+			display: none
+			fieldset
+				text-align: center
+				select
+					font-size: 100%
+	.head2head
+		position: relative
+		dl.control
+			position: absolute
+			top: 0
+			right: 0
+			background: #fff
+			z-index: 1001
+			dt,dd
+				margin: 1px
+			dt
+				padding: 3px 7px
+				line-height: 150%
+				text-align: right
+				&:hover
+					background: #333
+					color: #fff
+			dd
+				display: none
+				&.separator
+					border-top: 1px solid #ccc
+					padding-top: 1px
+				a
+					padding: 3px 7px
+					display: block
+					background: #fff
+					color: $highlight_color
+					cursor: pointer
+					&:hover
+						background: $highlight_color
+						color: #fff
+			&.open
+				border: 1px solid #333
+				dt
+					background: #333
+					color: #fff
+				dd
+					display: block
+					
+	h1
+		position: relative
+		#update
+			font-size: 50%
+			font-weight: bold
+			background: #fff
+			padding: 3px 5px
+			position: absolute
+			top: 0
+			right: 0
+			border: 1px solid $highlight_color
+			cursor: pointer
+			&:hover
+				background: $highlight_color
+				color: #fff
+				
 	#mapCanvas
 		display: none
 		height: 100px

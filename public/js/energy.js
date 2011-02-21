@@ -176,5 +176,37 @@ $(document).ready(function() {
 			  	});
 			}
 		});
+
+		if($('#lgaH2H').length > 0) {
+			$('#update').click(function(){
+				if($(this).hasClass('visible')) {
+					$('#lgaH2H').css({'display':'none'});
+					$(this).html('edit');
+				} else {
+					$('#lgaH2H').css({'display':'block'});
+					$(this).html('hide');
+				}
+				$(this).toggleClass('visible');
+			}).css({'display':''});
+		}
+		$('dl.control').hover(
+			function(){
+				$(this).addClass('open');
+			},
+			function(){
+				$(this).removeClass('open');
+			}
+		);
+		$('dl.control a').click(function(ev){
+			// ev.preventDefault();
+			// ev.stopPropagation();
+			var link = $(ev.target).attr('href').replace("#","");
+			console.log(link);
+		});
 	}
 });
+
+function color_gradient(value, details) {
+	var max = "ff3333", mean = "ffe539", min = "49cd6e", color_gradient = min;
+    
+}

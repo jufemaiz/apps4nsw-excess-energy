@@ -1,8 +1,26 @@
 .container
-	%h1
-		%a{:href=>'/lgas'} Local Government Area
-		&rarr;
-		= @lga.lga
+	.column.span-16
+		%h1
+			%a{:href=>'/lgas'} Local Government Area
+			&rarr;
+			= @lga.lga
+	.column.span-8.last
+		%form{ :action => "/lgas/#{@lga.lga_code}", :method => "get", :id => 'lgaH2HShortcut' }
+			%fieldset
+				%legend
+					Compare
+					= "#{@lga.lga}"
+					to another
+					%abbr{ :title => "Local Government Area" } LGA
+				.input.select
+					%select{ :name => "lgas" }
+						- @lgas.each do |lga|
+							- unless lga.lga_code == @lga.lga_code
+								%option{ :value => lga.lga_code.to_s }
+									= lga.lga
+				.input.submit
+					%input{ :type => "submit", :value => "Compare" }
+
 #mapCanvas.collapsed
 	#map
 	#controller

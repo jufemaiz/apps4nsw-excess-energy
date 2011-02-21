@@ -21,52 +21,20 @@ require 'lga-model'
 
 get '/' do
 
-  # @row_number = 0
-  # @lgas_header = []
-  # @lgas = []
-  
-  # For each line
-  # IO.foreach("public/csv/2010-consumption.csv") do |f|
-  #   @row_number += 1
-  #   if @row_number == 1
-  #     FasterCSV.parse(f) do |row|
-  #       @lgas_header = row
-  #     end
-  #   elsif @row_number > 1
-  #     FasterCSV.parse(f) do |row|
-  #       @lgas.push LGA.new(@lgas_header,row)
-  #     end
-  #   end
-  #  end
-  
   @lgas = get_lgas
-
+  @lgas_stats = lgas_stats(@lgas)
+  
   haml :index
 end
 
 # ----------------------------------
-# LGA Browse
+# Map
 # ----------------------------------
 
 get %r{/map(\/)?$} do  
 
-  @row_number = 0
-  @lgas_header = []
-  @lgas = []
-  
-  # For each line
-  IO.foreach("public/csv/2010-consumption.csv") do |f|
-    @row_number += 1
-    if @row_number == 1
-      FasterCSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      FasterCSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header,row)
-      end
-    end
-   end
+  @lgas = get_lgas
+  @lgas_stats = lgas_stats(@lgas)
   
   haml :map
 end
@@ -78,23 +46,17 @@ end
 
 get %r{/lgas(\/)?$} do  
 
-  @row_number = 0
-  @lgas_header = []
-  @lgas = []
-  
-  # For each line
-  IO.foreach("public/csv/2010-consumption.csv") do |f|
-    @row_number += 1
-    if @row_number == 1
-      FasterCSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      FasterCSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header,row)
-      end
+  unless params[:lgas].nil?
+    if params[:lgas].length == 1
+      redirect "/lgas/#{params[:lgas][0]}"
+    elsif
+      redirect "/lgas/#{params[:lgas][0]}?lgas=#{params[:lgas][1]}"
     end
-   end
+  end
+
+
+  @lgas = get_lgas
+  @lgas_stats = lgas_stats(@lgas)
   
   haml :lgas_index
 end
@@ -105,23 +67,12 @@ end
 
 get %r{/lgas/(\d{5})(\/.*)?$} do
   
-  @row_number = 0
-  @lgas_header = []
-  @lgas = []
-  
-  # For each line
-  IO.foreach("public/csv/2010-consumption.csv") do |f|
-    @row_number += 1
-    if @row_number == 1
-      FasterCSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      FasterCSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header,row)
-      end
-    end
+  unless params[:lgas].nil?
+    redirect "/lgas/#{params[:captures][0]},#{params[:lgas]}"
   end
+  
+  @lgas = get_lgas
+  @lgas_stats = lgas_stats(@lgas)
   
   @lgas.each do |lga|
     if lga.lga_code == params[:captures][0].to_i
@@ -138,10 +89,6 @@ end
 
 # ----------------------------------
 # LGA - Head to Head
-# ----------------------------------
-
-# ----------------------------------
-# LGA Show
 # ----------------------------------
 
 get %r{/lgas/(\d{5}),(\d{5})(\/.*)?$} do
@@ -176,24 +123,9 @@ end
 
 get %r{/energy(\/)?$} do  
 
-  @row_number = 0
-  @lgas_header = []
-  @lgas = []
+  @lgas = get_lgas
+  @lgas_stats = lgas_stats(@lgas)
   
-  # For each line
-  IO.foreach("public/csv/2010-consumption.csv") do |f|
-    @row_number += 1
-    if @row_number == 1
-      FasterCSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      FasterCSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header,row)
-      end
-    end
-   end
-
    haml :energy
 end
 
@@ -203,24 +135,9 @@ end
 
 get %r{/energy/residential(\/)?$} do  
 
-  @row_number = 0
-  @lgas_header = []
-  @lgas = []
+  @lgas = get_lgas
+  @lgas_stats = lgas_stats(@lgas)
   
-  # For each line
-  IO.foreach("public/csv/2010-consumption.csv") do |f|
-    @row_number += 1
-    if @row_number == 1
-      FasterCSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      FasterCSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header,row)
-      end
-    end
-   end
-
    haml :energy_residential
 
 end
@@ -231,24 +148,9 @@ end
 
 get %r{/energy/residential/normal(\/)?$} do  
 
-  @row_number = 0
-  @lgas_header = []
-  @lgas = []
+  @lgas = get_lgas
+  @lgas_stats = lgas_stats(@lgas)
   
-  # For each line
-  IO.foreach("public/csv/2010-consumption.csv") do |f|
-    @row_number += 1
-    if @row_number == 1
-      FasterCSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      FasterCSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header,row)
-      end
-    end
-   end
-
    haml :energy_residential_normal
 
 end
@@ -259,24 +161,9 @@ end
 
 get %r{/energy/residential/hot-water(\/)?$} do  
 
-  @row_number = 0
-  @lgas_header = []
-  @lgas = []
+  @lgas = get_lgas
+  @lgas_stats = lgas_stats(@lgas)
   
-  # For each line
-  IO.foreach("public/csv/2010-consumption.csv") do |f|
-    @row_number += 1
-    if @row_number == 1
-      FasterCSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      FasterCSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header,row)
-      end
-    end
-   end
-
    haml :energy_residential_hot_water
 
 end
@@ -287,24 +174,9 @@ end
 
 get %r{/energy/business(\/)?$} do  
 
-  @row_number = 0
-  @lgas_header = []
-  @lgas = []
+  @lgas = get_lgas
+  @lgas_stats = lgas_stats(@lgas)
   
-  # For each line
-  IO.foreach("public/csv/2010-consumption.csv") do |f|
-    @row_number += 1
-    if @row_number == 1
-      FasterCSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      FasterCSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header,row)
-      end
-    end
-   end
-
    haml :energy_business
 
 end
@@ -315,24 +187,9 @@ end
 
 get %r{/energy/business/small(\/)?$} do  
 
-  @row_number = 0
-  @lgas_header = []
-  @lgas = []
+  @lgas = get_lgas
+  @lgas_stats = lgas_stats(@lgas)
   
-  # For each line
-  IO.foreach("public/csv/2010-consumption.csv") do |f|
-    @row_number += 1
-    if @row_number == 1
-      FasterCSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      FasterCSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header,row)
-      end
-    end
-   end
-
    haml :energy_business_small
 
 end
@@ -343,24 +200,9 @@ end
 
 get %r{/energy/business/large(\/)?$} do  
 
-  @row_number = 0
-  @lgas_header = []
-  @lgas = []
+  @lgas = get_lgas
+  @lgas_stats = lgas_stats(@lgas)
   
-  # For each line
-  IO.foreach("public/csv/2010-consumption.csv") do |f|
-    @row_number += 1
-    if @row_number == 1
-      FasterCSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      FasterCSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header,row)
-      end
-    end
-   end
-
    haml :energy_business_large
 
 end
@@ -483,37 +325,37 @@ helpers do
       lgas_max_mins[:total][:energy] = max_min_mean_median(@lgas.collect{|l| l.total_energy})
       lgas_max_mins[:total][:customers] = max_min_mean_median(@lgas.collect{|l| l.total_customers})
       lgas_max_mins[:total][:population] = max_min_mean_median(@lgas.collect{|l| l.population})
-      lgas_max_mins[:total][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.total_energy.to_f / l.total_customers})
-      lgas_max_mins[:total][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.total_energy.to_f / l.population})
+      lgas_max_mins[:total][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.total_energy_per_customer})
+      lgas_max_mins[:total][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.total_energy_per_resident})
       
       # Residential
       lgas_max_mins[:residential][:total][:energy] = max_min_mean_median(@lgas.collect{|l| l.total_residential_energy})
       lgas_max_mins[:residential][:total][:customers] = max_min_mean_median(@lgas.collect{|l| l.residential_customers})
-      lgas_max_mins[:residential][:total][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.total_residential_energy.to_f / l.residential_customers})
-      lgas_max_mins[:residential][:total][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.total_residential_energy.to_f / l.population})
+      lgas_max_mins[:residential][:total][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.total_residential_energy_per_customer})
+      lgas_max_mins[:residential][:total][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.total_residential_energy_per_resident})
       
       lgas_max_mins[:residential][:normal][:energy] = max_min_mean_median(@lgas.collect{|l| l.residential_energy})
       lgas_max_mins[:residential][:normal][:customers] = max_min_mean_median(@lgas.collect{|l| l.residential_customers})
-      lgas_max_mins[:residential][:normal][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.residential_energy.to_f / l.residential_customers})
-      lgas_max_mins[:residential][:normal][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.residential_energy.to_f / l.population})
+      lgas_max_mins[:residential][:normal][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.residential_energy_per_customer})
+      lgas_max_mins[:residential][:normal][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.residential_energy_per_resident})
       
       lgas_max_mins[:residential][:controlled_load][:energy] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_energy})
       lgas_max_mins[:residential][:controlled_load][:customers] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_customers})
-      lgas_max_mins[:residential][:controlled_load][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_energy.to_f / l.residential_controlled_load_customers})
-      lgas_max_mins[:residential][:controlled_load][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_energy.to_f / l.population})
+      lgas_max_mins[:residential][:controlled_load][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_energy_per_customer})
+      lgas_max_mins[:residential][:controlled_load][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_energy_per_resident})
       
       # Business
       lgas_max_mins[:business][:total][:energy] = max_min_mean_median(@lgas.collect{|l| l.total_business_energy})
       lgas_max_mins[:business][:total][:customers] = max_min_mean_median(@lgas.collect{|l| l.total_business_customers})
-      lgas_max_mins[:business][:total][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.total_business_energy.to_f / l.total_business_customers})
+      lgas_max_mins[:business][:total][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.total_business_energy_per_customer})
 
       lgas_max_mins[:business][:small][:energy] = max_min_mean_median(@lgas.collect{|l| l.small_business_energy})
       lgas_max_mins[:business][:small][:customers] = max_min_mean_median(@lgas.collect{|l| l.small_business_customers})
-      lgas_max_mins[:business][:small][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.small_business_energy.to_f / l.small_business_customers})
+      lgas_max_mins[:business][:small][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.small_business_energy_per_customer})
 
       lgas_max_mins[:business][:large][:energy] = max_min_mean_median(@lgas.collect{|l| l.large_business_energy})
       lgas_max_mins[:business][:large][:customers] = max_min_mean_median(@lgas.collect{|l| l.large_business_customers})
-      lgas_max_mins[:business][:large][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.large_business_energy.to_f / l.large_business_customers})
+      lgas_max_mins[:business][:large][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.large_business_energy_per_customer})
 
     end
     lgas_max_mins
@@ -566,6 +408,47 @@ helpers do
       end
     end
     return query_string
+  end
+  
+  def color_gradient(value, details)
+    max = "ff3333"
+    mean = "ffe539"
+    # mean = "39a9ff"
+    min = "49cd6e"
+    color_gradient = min
+    value.to_f! if value.class == "Fixnum"
+    # puts value.class
+
+    percent = value / (details[:max])
+    percent_max_min_lower = (value - details[:min]).to_f / (details[:mean] - details[:min])
+    percent_max_min_upper = (value - details[:mean]).to_f / (details[:max] - details[:mean])
+    
+    puts "value: #{value}\n percentage: #{percent}\npercent_max_min_lower: #{percent_max_min_lower}\npercent_max_min_upper: #{percent_max_min_upper}"
+    
+    if value <= details[:min]
+      color_gradient = min
+    elsif value == details[:mean]
+      color_gradient = mean
+    elsif value >= details[:max]
+      color_gradient = max
+    elsif value > details[:min] && value < details[:mean]
+      red =   (min[0..1].hex + percent_max_min_lower * (mean[0..1].hex - min[0..1].hex)).to_i.to_s(16).rjust(2,'0')
+      green = (min[2..3].hex + percent_max_min_lower * (mean[2..3].hex - min[2..3].hex)).to_i.to_s(16).rjust(2,'0')
+      blue =  (min[4..5].hex + percent_max_min_lower * (mean[4..5].hex - min[4..5].hex)).to_i.to_s(16).rjust(2,'0')
+      puts "red: #{red}"
+      puts "green: #{green}"
+      puts "blue: #{blue}"
+      color_gradient = red + green + blue
+    elsif value > details[:mean] && value < details[:max]
+      red =   (max[0..1].hex + percent_max_min_upper * (mean[0..1].hex - max[0..1].hex)).to_i.to_s(16).rjust(2,'0')
+      green = (max[2..3].hex + percent_max_min_upper * (mean[2..3].hex - max[2..3].hex)).to_i.to_s(16).rjust(2,'0')
+      blue =  (max[4..5].hex + percent_max_min_upper * (mean[4..5].hex - max[4..5].hex)).to_i.to_s(16).rjust(2,'0')
+      puts "red: #{red}"
+      puts "green: #{green}"
+      puts "blue: #{blue}"
+      color_gradient = red + green + blue
+    end
+    color_gradient
   end
   
 end

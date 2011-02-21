@@ -51,26 +51,77 @@ class LGA
   end
   
   def to_json(*args)
-    @hash.to_json(*args)
+    @hash.merge({
+      :total_energy => self.total_energy,
+      :total_customers => self.total_customers,
+      :total_energy_per_customer => self.total_energy_per_customer,
+      :total_energy_per_resident => self.total_energy_per_resident,
+
+      :total_residential_energy => self.total_residential_energy,
+      :total_residential_energy_per_customer => self.total_residential_energy_per_customer,
+      :total_residential_energy_per_resident => self.total_residential_energy_per_resident,
+      :residential_energy_per_customer => self.residential_energy_per_customer,
+      :residential_energy_per_resident => self.residential_energy_per_resident,
+      :residential_controlled_load_energy_per_customer => self.residential_controlled_load_energy_per_customer,
+      :residential_controlled_load_energy_per_resident => self.residential_controlled_load_energy_per_resident,
+
+      :total_business_energy => self.total_business_energy,
+      :total_business_customers => self.total_business_customers,
+      :total_business_energy_per_customer => self.total_business_energy_per_customer,
+      :small_business_energy_per_customer => self.small_business_energy_per_customer,
+      :large_business_energy_per_customer => self.large_business_energy_per_customer
+    }).to_json(*args)
   end
   
   def total_energy
     total_energy = self.total_residential_energy + self.total_business_energy
   end
+  def total_customers
+    total = self.residential_customers + self.total_business_customers
+  end
+  def total_energy_per_customer
+    total_energy_per_customer = self.total_energy.to_f / self.total_customers
+  end
+  def total_energy_per_resident
+    total_energy_per_resident = self.total_energy.to_f / self.population
+  end
 
   def total_residential_energy
     total_residential_energy = self.residential_energy + self.residential_controlled_load_energy
+  end
+  def total_residential_energy_per_customer
+    total_residential_energy_per_customer = self.total_residential_energy.to_f / self.residential_customers
+  end
+  def total_residential_energy_per_resident
+    total_residential_energy_per_resident = self.total_residential_energy.to_f / self.population
+  end
+  def residential_energy_per_customer
+    total_residential_energy_per_customer = self.residential_energy.to_f / self.residential_customers
+  end
+  def residential_energy_per_resident
+    total_residential_energy_per_resident = self.residential_energy.to_f / self.population
+  end
+  def residential_controlled_load_energy_per_customer
+    residential_controlled_load_energy_per_customer = self.residential_controlled_load_energy.to_f / self.residential_controlled_load_customers
+  end
+  def residential_controlled_load_energy_per_resident
+    total_residential_energy_per_resident = self.residential_controlled_load_energy.to_f / self.population
   end
 
   def total_business_energy
     total_business_energy = self.small_business_energy + self.large_business_energy
   end
-
   def total_business_customers
     total = self.small_business_customers + self.large_business_customers
   end
-
-  def total_customers
-    total = self.residential_customers + self.total_business_customers
+  def total_business_energy_per_customer
+    total_business_energy_per_customer = self.total_business_energy.to_f / self.total_business_customers
   end
+  def small_business_energy_per_customer
+    small_business_energy_per_customer = self.small_business_energy.to_f / self.total_business_customers
+  end
+  def large_business_energy_per_customer
+    large_business_energy_per_customer = self.large_business_energy.to_f / self.total_business_customers
+  end
+
 end
