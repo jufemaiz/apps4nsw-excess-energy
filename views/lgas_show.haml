@@ -3,7 +3,7 @@
 		%h1
 			%a{:href=>'/lgas'} Local Government Area
 			&rarr;
-			= @lga_code
+			= @lga.lga_name
 	.column.span-8.last
 		%form{ :action => "/lgas/#{@lga.lga_code}", :method => "get", :id => 'lgaH2HShortcut' }
 			%fieldset
