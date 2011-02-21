@@ -34,7 +34,7 @@
 			%dd
 				%a{:href=>"http://www.#{@lga.lga.downcase.gsub(' ', '')}.nsw.gov.au"}
 					Website
-	.column.span-12.last{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Residential|Small%20Business|Large%20Business&chdlp=b&chco=3399ff&chd=t:#{100*@lga.residential_customers/@lga.total_customers},#{100*@lga.small_business_customers/@lga.total_customers},#{100*@lga.large_business_customers/@lga.total_customers}')"}
+	.column.span-12.last{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Residential|Small%20Business|Large%20Business&chdlp=b&chco=2fb755&chd=t:#{100*@lga.residential_customers/@lga.total_customers},#{100*@lga.small_business_customers/@lga.total_customers},#{100*@lga.large_business_customers/@lga.total_customers}')"}
 		%dl
 			%dt Customers
 			%dd
@@ -82,10 +82,10 @@
 					= commify @lga.total_energy.to_f / @lga.total_customers
 				%acronym{:title=>"kilowatt hours"} kWh
 				= "/ customer"
-	.column.span-8.last{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Residential|Small%20Business|Large%20Business&chdlp=b&chco=3399ff&chd=t:#{100*@lga.total_residential_energy/@lga.total_energy},#{100*@lga.small_business_energy/@lga.total_energy},#{100*@lga.large_business_energy/@lga.total_energy}')"}
+	.column.span-8.last{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Residential|Small%20Business|Large%20Business&chdlp=b&chco=2fb755&chd=t:#{100*@lga.total_residential_energy/@lga.total_energy},#{100*@lga.small_business_energy/@lga.total_energy},#{100*@lga.large_business_energy/@lga.total_energy}')"}
 	.column.span-12
 		%h2 Residential Energy
-		%dl{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Normal|Hot%20Water&chdlp=b&chco=3399ff&chd=t:#{100*@lga.residential_energy/@lga.total_residential_energy},#{100*@lga.residential_controlled_load_energy/@lga.total_residential_energy}')"}
+		%dl{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Normal|Hot%20Water&chdlp=b&chco=2fb755&chd=t:#{100*@lga.residential_energy/@lga.total_residential_energy},#{100*@lga.residential_controlled_load_energy/@lga.total_residential_energy}')"}
 			%dt Residential
 			%dd
 				%span.number
@@ -127,7 +127,7 @@
 		
 	.column.span-12.last
 		%h2 Business Energy
-		%dl{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Small%20Business|Large%20Business&chdlp=b&chco=3399ff&chd=t:#{100*@lga.small_business_energy/@lga.total_business_energy},#{100*@lga.large_business_energy/@lga.total_business_energy}')"}
+		%dl{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Small%20Business|Large%20Business&chdlp=b&chco=2fb755&chd=t:#{100*@lga.small_business_energy/@lga.total_business_energy},#{100*@lga.large_business_energy/@lga.total_business_energy}')"}
 			%dt Small Business
 			%dd
 				%span.number
