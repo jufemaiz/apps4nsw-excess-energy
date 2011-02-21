@@ -17,7 +17,7 @@
 					%tr
 						%th
 							%a{:href=>"/lgas/#{lga.lga_code}"}
-								= lga.lga
+								= lga.lga_name
 						%td.number
 							= commify lga.total_energy
 
@@ -38,7 +38,7 @@
 					%tr
 						%th
 							%a{:href=>"/lgas/#{lga.lga_code}"}
-								= lga.lga
+								= lga.lga_name
 						%td.number
 							= commify lga.total_energy / lga.population
 	.column.span-12.last
@@ -58,6 +58,6 @@
 					%tr
 						%th
 							%a{:href=>"/lgas/#{lga.lga_code}"}
-								= lga.lga
+								= lga.lga_name
 						%td.number
 							= commify lga.total_energy / lga.total_customers

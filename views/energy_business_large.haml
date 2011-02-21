@@ -21,7 +21,7 @@
 					%tr
 						%th
 							%a{:href=>"/lgas/#{lga.lga_code}"}
-								= lga.lga
+								= lga.lga_name
 						%td.number
 							= commify lga.large_business_energy
 
@@ -42,6 +42,6 @@
 					%tr
 						%th
 							%a{:href=>"/lgas/#{lga.lga_code}"}
-								= lga.lga
+								= lga.lga_name
 						%td.number
 							= commify lga.large_business_energy / lga.residential_customers

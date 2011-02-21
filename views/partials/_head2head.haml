@@ -3,7 +3,7 @@
 - unless lga.nil? || lga_stats.nil?
 	%h2
 		%a{:href=>"/lgas/#{lga.lga_code}"}
-			= lga.lga
+			= lga.lga_name
 	.mapCanvas
 		.map
 			Map Holder

@@ -1,14 +1,94 @@
 .container
-	%dl
-		%dt Header
-		%dd
-			= @lgas_header.inspect
-		%dt Rows
-		%dd
-			= @lgas.to_json
-		%dt Row Numbers
-		%dd
-			= @row_number
-		%dt Coordinates
-		%dd
-			= @placemarks.inspect
+	%h1 EnergyAustralia Energy Usage Breakdown
+
+	.column.span-12
+		%h2
+			Total Energy  (
+			%abbr{:title=>"kilowatt hours"} kWh
+			)
+		%dl{:style => "min-height: 250px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x250&chdl=Residential|Small%20Business|Large%20Business&chdlp=bv&chco=2fb755&chd=t:#{100*@lgas.collect{ |lga| lga.total_residential_energy }.inject{ |sum, el| sum + el }/@lgas.collect{ |lga| lga.total_energy }.inject{ |sum, el| sum + el }},#{100*@lgas.collect{ |lga| lga.small_business_energy }.inject{ |sum, el| sum + el }/@lgas.collect{ |lga| lga.total_energy }.inject{ |sum, el| sum + el }},#{100*@lgas.collect{ |lga| lga.large_business_energy }.inject{ |sum, el| sum + el }/@lgas.collect{ |lga| lga.total_energy }.inject{ |sum, el| sum + el }}')"}
+			%dt Residential
+			%dd
+				%span.number
+					= commify @lgas.collect{ |lga| lga.total_residential_energy }.inject{ |sum, el| sum + el }
+			%dt Business
+			%dd
+				%span.number
+					= commify @lgas.collect{ |lga| lga.small_business_energy }.inject{ |sum, el| sum + el }
+				small
+			%dd
+				%span.number
+					= commify @lgas.collect{ |lga| lga.large_business_energy }.inject{ |sum, el| sum + el }
+				large
+			%dd.sub-total
+				%span.number
+					= commify @lgas.collect{ |lga| lga.total_business_energy }.inject{ |sum, el| sum + el }
+				total
+			%dt Total Energy
+			%dd.total
+				%span.number.important
+					= commify @lgas.collect{ |lga| lga.total_energy }.inject{ |sum, el| sum + el }
+	.column.span-12.last
+		%h2 Total Customers
+		%dl{:style => "min-height: 250px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x250&chdl=Residential|Small%20Business|Large%20Business&chdlp=bv&chco=2fb755&chd=t:#{100*@lgas.collect{ |lga| lga.residential_customers }.inject{ |sum, el| sum + el }/@lgas.collect{ |lga| lga.total_customers }.inject{ |sum, el| sum + el }},#{100*@lgas.collect{ |lga| lga.small_business_customers }.inject{ |sum, el| sum + el }/@lgas.collect{ |lga| lga.total_customers }.inject{ |sum, el| sum + el }},#{100*@lgas.collect{ |lga| lga.large_business_customers }.inject{ |sum, el| sum + el }/@lgas.collect{ |lga| lga.total_customers }.inject{ |sum, el| sum + el }}')"}
+			%dt Residential
+			%dd
+				%span.number
+					= commify @lgas.collect{ |lga| lga.residential_customers }.inject{ |sum, el| sum + el }
+			%dt Business
+			%dd
+				%span.number
+					= commify @lgas.collect{ |lga| lga.small_business_customers }.inject{ |sum, el| sum + el }
+				small business
+			%dd
+				%span.number
+					= commify @lgas.collect{ |lga| lga.large_business_customers }.inject{ |sum, el| sum + el }
+				large business
+			%dd.sub-total
+				%span.number
+					= commify @lgas.collect{ |lga| lga.total_business_customers }.inject{ |sum, el| sum + el }
+				total business
+			%dt Total Customers
+			%dd.total
+				%span.number.important
+					= commify @lgas.collect{ |lga| lga.total_customers }.inject{ |sum, el| sum + el }
+	/ .column.span-12
+	/ 	%h2 Business Details
+	/ .column.span-12.last
+	/ 	%h2 Residential Details
+	/ 
+	/ .column.span-24.last
+	/ 	%dl
+	/ 		%dt Header
+	/ 		%dd
+	/ 			= @lgas_header.inspect
+	/ 		%dt Rows
+	/ 		%dd
+	/ 			= @lgas.to_json
+	/ 		%dt Row Numbers
+	/ 		%dd
+	/ 			= @row_number
+	/ 		%dt Coordinates
+	/ 		%dd
+	/ 			= @placemarks.inspect
+	
+	.column.span-24.last
+		%h2 Local Government Areas
+	.column.span-8
+		%ul
+			- @lgas[0..12].each do |lga|
+				%li
+					%a{:href => "/lgas/#{lga.lga_code}"}
+						= lga.lga_name
+	.column.span-8
+		%ul
+			- @lgas[13..25].each do |lga|
+				%li
+					%a{:href => "/lgas/#{lga.lga_code}"}
+						= lga.lga_name
+	.column.span-8.last
+		%ul
+			- @lgas[26..38].each do |lga|
+				%li
+					%a{:href => "/lgas/#{lga.lga_code}"}
+						= lga.lga_name

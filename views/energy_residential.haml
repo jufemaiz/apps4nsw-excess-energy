@@ -16,7 +16,7 @@
 					%tr
 						%th
 							%a{:href=>"/lgas/#{lga.lga_code}"}
-								= lga.lga
+								= lga.lga_name
 						%td.number
 							= commify lga.total_residential_energy
 
@@ -34,7 +34,7 @@
 					%tr
 						%th
 							%a{:href=>"/lgas/#{lga.lga_code}"}
-								= lga.lga
+								= lga.lga_name
 						%td.number
 							= commify lga.total_residential_energy / lga.population
 	.column.span-8.last
@@ -51,6 +51,6 @@
 					%tr
 						%th
 							%a{:href=>"/lgas/#{lga.lga_code}"}
-								= lga.lga
+								= lga.lga_name
 						%td.number
 							= commify lga.total_residential_energy / lga.residential_customers

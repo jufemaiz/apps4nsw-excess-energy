@@ -3,10 +3,10 @@
 		%a{:href=>"/lgas"} Local Government Area
 		&rarr; Head to Head &rarr;
 		%a{:href=>"/lgas/#{@lga1.lga_code}"}
-			= @lga1.lga
+			= @lga1.lga_name
 		%abbr{:title=>"versus"} v
 		%a{:href=>"/lgas/#{@lga2.lga_code}"}
-			= @lga2.lga
+			= @lga2.lga_name
 		#update
 			edit
 		%form{ :action => "/lgas/", :method => "get", :id => 'lgaH2H' }
@@ -18,20 +18,20 @@
 						- @lgas.each do |lga|
 							- if lga.lga_code == @lga1.lga_code
 								%option{ :value => lga.lga_code.to_s, :selected => "#{'selected' }" }
-									= lga.lga
+									= lga.lga_name
 							- else
 								%option{ :value => lga.lga_code.to_s }
-									= lga.lga
+									= lga.lga_name
 				%abbr{:title=>"versus"} v
 				.input.select
 					%select{ :name => "lgas[]" }
 						- @lgas.each do |lga|
 							- if lga.lga_code == @lga2.lga_code
 								%option{ :value => lga.lga_code.to_s, :selected => "#{'selected' }" }
-									= lga.lga
+									= lga.lga_name
 							- else
 								%option{ :value => lga.lga_code.to_s }
-									= lga.lga
+									= lga.lga_name
 				.input.submit
 					%input{ :type => "submit", :value => "Update" }
 	

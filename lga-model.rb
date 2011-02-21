@@ -124,4 +124,7 @@ class LGA
     large_business_energy_per_customer = self.large_business_energy.to_f / self.total_business_customers
   end
 
+  def lga_name
+    self.lga.split(" ").collect{|w| w.capitalize}.join(" ")
+  end
 end
