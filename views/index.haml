@@ -19,16 +19,21 @@
 			%dd
 				%span.number
 					= commify @lgas.collect{ |lga| lga.small_business_energy }.inject{ |sum, el| sum + el }
-				small
+				%a{ :href => "/energy/business/small" }
+					small
 			%dd
 				%span.number
 					= commify @lgas.collect{ |lga| lga.large_business_energy }.inject{ |sum, el| sum + el }
-				large
+				%a{ :href => "/energy/business/large" }
+					large
 			%dd.sub-total
 				%span.number
 					= commify @lgas.collect{ |lga| lga.total_business_energy }.inject{ |sum, el| sum + el }
-				total
-			%dt Total Energy
+				%a{ :href => "/energy/business" }
+					total
+			%dt
+				%a{ :href => "/energy" }
+					Total Energy
 			%dd.total
 				%span.number.important
 					= commify @lgas.collect{ |lga| lga.total_energy }.inject{ |sum, el| sum + el }
@@ -47,16 +52,21 @@
 			%dd
 				%span.number
 					= commify @lgas.collect{ |lga| lga.small_business_customers }.inject{ |sum, el| sum + el }
-				small
+				%a{ :href => "/energy/business/small" }
+					small
 			%dd
 				%span.number
 					= commify @lgas.collect{ |lga| lga.large_business_customers }.inject{ |sum, el| sum + el }
-				large
+				%a{ :href => "/energy/business/large" }
+					large
 			%dd.sub-total
 				%span.number
 					= commify @lgas.collect{ |lga| lga.total_business_customers }.inject{ |sum, el| sum + el }
-				total
-			%dt Total Customers
+				%a{ :href => "/energy/business" }
+					total
+			%dt
+				%a{ :href => "/energy" }
+					Total Customers
 			%dd.total
 				%span.number.important
 					= commify @lgas.collect{ |lga| lga.total_customers }.inject{ |sum, el| sum + el }
