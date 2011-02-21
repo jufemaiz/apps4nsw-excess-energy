@@ -309,11 +309,39 @@ h5
 				padding: 0
 			dd+dt
 				margin-top: 5px
+			dd
+				position: relative
+				span
+					z-index: 5
+					display: block
+					position: relative
+					text-shadow: 1px 1px 0 #fff
+					&.percentage
+						display: block
+						position: absolute
+						top: 10%
+						background: #498FCD
+						height: 80%
+						z-index: 1
+						opacity: 1
 	#lga1
 		text-align: right
+		dl
+			dd
+				span
+					padding-right: 5px
+					&.percentage
+						right: 0
+						padding: 0
 	#lga2
 		text-align: left
-			
+		dl
+			dd
+				span
+					padding-left: 5px
+					&.percentage
+						left: 0
+						padding: 0
 
 
 #footer

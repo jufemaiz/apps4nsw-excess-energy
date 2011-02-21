@@ -1,6 +1,7 @@
 .container.head2head
 	%h1
-		Head to Head &rarr;
+		%a{:href=>"/lgas"} Local Government Area
+		&rarr; Head to Head &rarr;
 		%a{:href=>"/lgas/#{@lga1.lga_code}"}
 			= @lga1.lga
 		%abbr{:title=>"versus"} v
@@ -8,11 +9,11 @@
 			= @lga2.lga
 	.column.span-12
 		#lga1.lga
-			= partial(:'partials/head2head', :locals => {:lga => @lga1})
+			= partial(:'partials/head2head', :locals => {:lga => @lga1, :lga_stats => @lgas_stats})
 			%script{:type=>'text/javascript'}
 				= "var lga1 = #{@lga1.to_json}; var map1, bounds1;"
 	.column.span-12.last
 		#lga2.lga
-			= partial(:'partials/head2head', :locals => {:lga => @lga2})
+			= partial(:'partials/head2head', :locals => {:lga => @lga2, :lga_stats => @lgas_stats})
 			%script{:type=>'text/javascript'}
 				= "var lga2 = #{@lga2.to_json}; var map2, bounds2;"

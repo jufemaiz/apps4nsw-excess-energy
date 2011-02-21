@@ -1,0 +1,19 @@
+- value ||= 0
+- max ||= value
+- min ||= value
+- color ||= false
+- max_color = "ff3333"
+- min_color = "49cd6e"
+- # Max color: #666666
+- # Max color: #ff3333
+- # Min color: #49cd6e
+- unless value == 0 && max == 0 && min== 0
+	- percent = (value).to_f / (max)
+	- percent_max_min = (value - min).to_f / (max - min)
+	- if color
+		%span.percentage.color{:style=>"width: #{100*percent}%; background: ##{(min_color[0..1].hex + percent_max_min * (max_color[0..1].hex-min_color[0..1].hex)).to_i.to_s(16)}#{(min_color[2..3].hex + percent_max_min * (max_color[2..3].hex-min_color[2..3].hex)).to_i.to_s(16)}#{(min_color[4..5].hex + percent_max_min * (max_color[4..5].hex-min_color[4..5].hex)).to_i.to_s(16)}"}
+			&nbsp;
+	- else
+		%span.percentage{:style=>"width: #{100*percent}%;"}
+			&nbsp;
+- else

@@ -21,25 +21,27 @@ require 'lga-model'
 
 get '/' do
 
-  @row_number = 0
-  @lgas_header = []
-  @lgas = []
+  # @row_number = 0
+  # @lgas_header = []
+  # @lgas = []
   
   # For each line
-  IO.foreach("public/csv/2010-consumption.csv") do |f|
-    @row_number += 1
-    if @row_number == 1
-      FasterCSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      FasterCSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header,row)
-      end
-    end
-   end
+  # IO.foreach("public/csv/2010-consumption.csv") do |f|
+  #   @row_number += 1
+  #   if @row_number == 1
+  #     FasterCSV.parse(f) do |row|
+  #       @lgas_header = row
+  #     end
+  #   elsif @row_number > 1
+  #     FasterCSV.parse(f) do |row|
+  #       @lgas.push LGA.new(@lgas_header,row)
+  #     end
+  #   end
+  #  end
+  
+  @lgas = get_lgas
 
-   haml :index
+  haml :index
 end
 
 # ----------------------------------
@@ -144,23 +146,8 @@ end
 
 get %r{/lgas/(\d{5}),(\d{5})(\/.*)?$} do
   
-  @row_number = 0
-  @lgas_header = []
-  @lgas = []
-  
-  # For each line
-  IO.foreach("public/csv/2010-consumption.csv") do |f|
-    @row_number += 1
-    if @row_number == 1
-      FasterCSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      FasterCSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header,row)
-      end
-    end
-  end
+  @lgas = get_lgas
+  @lgas_stats = lgas_stats(@lgas)
   
   @lgas.each do |lga|
     if lga.lga_code == params[:captures][0].to_i
@@ -464,13 +451,79 @@ end
 
 helpers Sinatra::Partials
 helpers do
-  def EAID(iamsId)
-    prefix = iamsId[0..1].upcase.sub(/^S0/,'SG')
-    eaid = prefix + '000' + iamsId[2..(iamsId.length - 1)]
+  def get_lgas
+    row_number = 0
+    lgas_header = []
+    lgas = []
+
+    # For each line
+    IO.foreach("public/csv/2010-consumption.csv") do |f|
+      row_number += 1
+      if row_number == 1
+        FasterCSV.parse(f) do |row|
+          lgas_header = row
+        end
+      elsif row_number > 1
+        FasterCSV.parse(f) do |row|
+          lgas.push LGA.new(lgas_header,row)
+        end
+      end
+     end
+    # Return the lgas
+    return lgas
   end
-  def iamsId(eaid)
-    prefix = eaid[0..1].upcase.sub(/^S0/,'SG')
-    iamsId = prefix + eaid[5..(eaid.length - 1)]
+
+
+  # For a given set of lgas, return a hash of max/mins
+  def lgas_stats(lgas)
+    lgas_max_mins = nil
+    unless lgas.nil? || lgas.length == 0
+      lgas_max_mins = { :total => { :energy => nil, :customers => nil, :population => nil }, :residential => { :total  => { :energy => nil, :customers => nil }, :normal => { :energy => nil, :customers => nil }, :controlled_load => { :energy => nil, :customers => nil } }, :business => { :total  => { :energy => nil, :customers => nil }, :small => { :energy => nil, :customers => nil }, :large => { :energy => nil, :customers => nil } } }
+      # Totals
+      lgas_max_mins[:total][:energy] = max_min_mean_median(@lgas.collect{|l| l.total_energy})
+      lgas_max_mins[:total][:customers] = max_min_mean_median(@lgas.collect{|l| l.total_customers})
+      lgas_max_mins[:total][:population] = max_min_mean_median(@lgas.collect{|l| l.population})
+      lgas_max_mins[:total][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.total_energy.to_f / l.total_customers})
+      lgas_max_mins[:total][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.total_energy.to_f / l.population})
+      
+      # Residential
+      lgas_max_mins[:residential][:total][:energy] = max_min_mean_median(@lgas.collect{|l| l.total_residential_energy})
+      lgas_max_mins[:residential][:total][:customers] = max_min_mean_median(@lgas.collect{|l| l.residential_customers})
+      lgas_max_mins[:residential][:total][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.total_residential_energy.to_f / l.residential_customers})
+      lgas_max_mins[:residential][:total][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.total_residential_energy.to_f / l.population})
+      
+      lgas_max_mins[:residential][:normal][:energy] = max_min_mean_median(@lgas.collect{|l| l.residential_energy})
+      lgas_max_mins[:residential][:normal][:customers] = max_min_mean_median(@lgas.collect{|l| l.residential_customers})
+      lgas_max_mins[:residential][:normal][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.residential_energy.to_f / l.residential_customers})
+      lgas_max_mins[:residential][:normal][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.residential_energy.to_f / l.population})
+      
+      lgas_max_mins[:residential][:controlled_load][:energy] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_energy})
+      lgas_max_mins[:residential][:controlled_load][:customers] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_customers})
+      lgas_max_mins[:residential][:controlled_load][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_energy.to_f / l.residential_controlled_load_customers})
+      lgas_max_mins[:residential][:controlled_load][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_energy.to_f / l.population})
+      
+      # Business
+      lgas_max_mins[:business][:total][:energy] = max_min_mean_median(@lgas.collect{|l| l.total_business_energy})
+      lgas_max_mins[:business][:total][:customers] = max_min_mean_median(@lgas.collect{|l| l.total_business_customers})
+      lgas_max_mins[:business][:total][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.total_business_energy.to_f / l.total_business_customers})
+
+      lgas_max_mins[:business][:small][:energy] = max_min_mean_median(@lgas.collect{|l| l.small_business_energy})
+      lgas_max_mins[:business][:small][:customers] = max_min_mean_median(@lgas.collect{|l| l.small_business_customers})
+      lgas_max_mins[:business][:small][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.small_business_energy.to_f / l.small_business_customers})
+
+      lgas_max_mins[:business][:large][:energy] = max_min_mean_median(@lgas.collect{|l| l.large_business_energy})
+      lgas_max_mins[:business][:large][:customers] = max_min_mean_median(@lgas.collect{|l| l.large_business_customers})
+      lgas_max_mins[:business][:large][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.large_business_energy.to_f / l.large_business_customers})
+
+    end
+    lgas_max_mins
+  end
+  
+  def max_min_mean_median(ar)
+    puts "ar => #{ar.inspect}\n\n"
+    unless ar.nil? || !(ar.length > 0)
+      {:all => ar, :max => ar.max,:min => ar.min, :mean => ar.inject{ |sum, el| sum + el }.to_f / ar.size}
+    end
   end
   
   def commify(number)

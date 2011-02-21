@@ -81,11 +81,10 @@ $(document).ready(function() {
 
 	  	$.getJSON('/polygons.json', function(data) {
 			var lgas = {};
+			bounds = new google.maps.LatLngBounds();
 			$.each(data[0], function(i,lga) {
-				console.log(i);
 				$.each(lga, function(j,v) {
 					var latlngs = [];
-					bounds = new google.maps.LatLngBounds();
 					$.each(v, function(index,value){
 						var marker = new google.maps.LatLng(value[0], value[1]);
 						latlngs.push(marker);
@@ -138,13 +137,13 @@ $(document).ready(function() {
 							latlngs.push(marker);
 							bounds1.extend(marker);
 						});
-
+						var color = $($('#lga1 span.percentage.color')[3]).css('background-color');
 						var lga_overlay = new google.maps.Polygon({
 					    	paths: latlngs,
-					    	strokeColor: "#498FCD",
+					    	strokeColor: color,
 					    	strokeOpacity: 0.8,
 					    	strokeWeight: 2,
-					    	fillColor: "#498FCD",
+					    	fillColor: color,
 					    	fillOpacity: 0.35
 					  	});
 					  	lga_overlay.setMap(map1);
@@ -164,13 +163,13 @@ $(document).ready(function() {
 							latlngs.push(marker);
 							bounds2.extend(marker);
 						});
-
+						var color = $($('#lga2 span.percentage.color')[3]).css('background-color');
 						var lga_overlay = new google.maps.Polygon({
 					    	paths: latlngs,
-					    	strokeColor: "#498FCD",
+					    	strokeColor: color,
 					    	strokeOpacity: 0.8,
 					    	strokeWeight: 2,
-					    	fillColor: "#498FCD",
+					    	fillColor: color,
 					    	fillOpacity: 0.35
 					  	});
 					  	lga_overlay.setMap(map2);
