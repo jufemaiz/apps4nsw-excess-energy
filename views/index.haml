@@ -7,11 +7,15 @@
 			%abbr{:title=>"kilowatt hours"} kWh
 			)
 		%dl{:style => "min-height: 250px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x250&chdl=Residential|Small%20Business|Large%20Business&chdlp=bv&chco=2fb755&chd=t:#{100*@lgas.collect{ |lga| lga.total_residential_energy }.inject{ |sum, el| sum + el }/@lgas.collect{ |lga| lga.total_energy }.inject{ |sum, el| sum + el }},#{100*@lgas.collect{ |lga| lga.small_business_energy }.inject{ |sum, el| sum + el }/@lgas.collect{ |lga| lga.total_energy }.inject{ |sum, el| sum + el }},#{100*@lgas.collect{ |lga| lga.large_business_energy }.inject{ |sum, el| sum + el }/@lgas.collect{ |lga| lga.total_energy }.inject{ |sum, el| sum + el }}')"}
-			%dt Residential
+			%dt
+				%a{ :href => "/energy/residential" }
+					Residential
 			%dd
 				%span.number
 					= commify @lgas.collect{ |lga| lga.total_residential_energy }.inject{ |sum, el| sum + el }
-			%dt Business
+			%dt
+				%a{ :href => "/energy/business" }
+					Business
 			%dd
 				%span.number
 					= commify @lgas.collect{ |lga| lga.small_business_energy }.inject{ |sum, el| sum + el }
@@ -31,23 +35,27 @@
 	.column.span-12.last
 		%h2 Total Customers
 		%dl{:style => "min-height: 250px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x250&chdl=Residential|Small%20Business|Large%20Business&chdlp=bv&chco=2fb755&chd=t:#{100*@lgas.collect{ |lga| lga.residential_customers }.inject{ |sum, el| sum + el }/@lgas.collect{ |lga| lga.total_customers }.inject{ |sum, el| sum + el }},#{100*@lgas.collect{ |lga| lga.small_business_customers }.inject{ |sum, el| sum + el }/@lgas.collect{ |lga| lga.total_customers }.inject{ |sum, el| sum + el }},#{100*@lgas.collect{ |lga| lga.large_business_customers }.inject{ |sum, el| sum + el }/@lgas.collect{ |lga| lga.total_customers }.inject{ |sum, el| sum + el }}')"}
-			%dt Residential
+			%dt
+				%a{ :href => "/energy/residential" }
+					Residential
 			%dd
 				%span.number
 					= commify @lgas.collect{ |lga| lga.residential_customers }.inject{ |sum, el| sum + el }
-			%dt Business
+			%dt
+				%a{ :href => "/energy/business" }
+					Business
 			%dd
 				%span.number
 					= commify @lgas.collect{ |lga| lga.small_business_customers }.inject{ |sum, el| sum + el }
-				small business
+				small
 			%dd
 				%span.number
 					= commify @lgas.collect{ |lga| lga.large_business_customers }.inject{ |sum, el| sum + el }
-				large business
+				large
 			%dd.sub-total
 				%span.number
 					= commify @lgas.collect{ |lga| lga.total_business_customers }.inject{ |sum, el| sum + el }
-				total business
+				total
 			%dt Total Customers
 			%dd.total
 				%span.number.important
