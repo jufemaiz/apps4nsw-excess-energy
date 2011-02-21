@@ -136,7 +136,7 @@ $(document).ready(function() {
 							latlngs.push(marker);
 							bounds1.extend(marker);
 						});
-						var color = $($('#lga1 span.percentage.color')[3]).css('background-color');
+						var color = $($('#lga1 span.percentage.color')[5]).css('background-color');
 						var lga_overlay = new google.maps.Polygon({
 					    	paths: latlngs,
 					    	strokeColor: color,
@@ -161,7 +161,7 @@ $(document).ready(function() {
 							latlngs.push(marker);
 							bounds2.extend(marker);
 						});
-						var color = $($('#lga2 span.percentage.color')[3]).css('background-color');
+						var color = $($('#lga2 span.percentage.color')[5]).css('background-color');
 						var lga_overlay = new google.maps.Polygon({
 					    	paths: latlngs,
 					    	strokeColor: color,
