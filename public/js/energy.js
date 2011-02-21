@@ -128,7 +128,6 @@ $(document).ready(function() {
 			  	window.map1 = new google.maps.Map(lga.find('.map')[0], myOptions);
 			  	window.bounds1 = new google.maps.LatLngBounds();
 				$.getJSON('/polygons/' + lga1['lga_code'] + '.json', function(data) {
-					console.log(data);
 					$.each(data[0][lga1['lga_code']+''], function(i,v) {
 						var latlngs = [];
 						bounds = new google.maps.LatLngBounds();
@@ -154,7 +153,6 @@ $(document).ready(function() {
 			  	window.map2 = new google.maps.Map(lga.find('.map')[0], myOptions);
 			  	window.bounds2 = new google.maps.LatLngBounds();
 				$.getJSON('/polygons/' + lga2['lga_code'] + '.json', function(data) {
-					console.log(data);
 					$.each(data[0][lga2['lga_code']+''], function(i,v) {
 						var latlngs = [];
 						bounds = new google.maps.LatLngBounds();
