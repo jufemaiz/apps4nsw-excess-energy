@@ -51,10 +51,10 @@ $(document).ready(function() {
 
 				var lga_overlay = new google.maps.Polygon({
 			    	paths: latlngs,
-			    	strokeColor: "#498FCD",
+			    	strokeColor: "#2fb755",
 			    	strokeOpacity: 0.8,
 			    	strokeWeight: 2,
-			    	fillColor: "#498FCD",
+			    	fillColor: "#2fb755",
 			    	fillOpacity: 0.35
 			  	});
 			  	lga_overlay.setMap(map);
@@ -93,10 +93,10 @@ $(document).ready(function() {
 
 					var lga_overlay = new google.maps.Polygon({
 				    	paths: latlngs,
-				    	strokeColor: "#498FCD",
+				    	strokeColor: "#2fb755",
 				    	strokeOpacity: 0.8,
 				    	strokeWeight: 2,
-				    	fillColor: "#498FCD",
+				    	fillColor: "#2fb755",
 				    	fillOpacity: 0.35
 				  	});
 				  	lga_overlay.setMap(map);

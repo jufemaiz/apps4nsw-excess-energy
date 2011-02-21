@@ -520,7 +520,6 @@ helpers do
   end
   
   def max_min_mean_median(ar)
-    puts "ar => #{ar.inspect}\n\n"
     unless ar.nil? || !(ar.length > 0)
       {:all => ar, :max => ar.max,:min => ar.min, :mean => ar.inject{ |sum, el| sum + el }.to_f / ar.size}
     end
