@@ -432,17 +432,17 @@ helpers do
     elsif value >= details[:max]
       color_gradient = max
     elsif value > details[:min] && value < details[:mean]
-      red =   (min[0..1].hex + percent_max_min_lower * (mean[0..1].hex - min[0..1].hex)).to_i.to_s(16).rjust(2,'0')
-      green = (min[2..3].hex + percent_max_min_lower * (mean[2..3].hex - min[2..3].hex)).to_i.to_s(16).rjust(2,'0')
-      blue =  (min[4..5].hex + percent_max_min_lower * (mean[4..5].hex - min[4..5].hex)).to_i.to_s(16).rjust(2,'0')
+      red =   (min[0..1].hex.to_i + percent_max_min_lower * (mean[0..1].hex.to_i - min[0..1].hex.to_i)).to_i.to_s(16).rjust(2,'0')
+      green = (min[2..3].hex.to_i + percent_max_min_lower * (mean[2..3].hex.to_i - min[2..3].hex.to_i)).to_i.to_s(16).rjust(2,'0')
+      blue =  (min[4..5].hex.to_i + percent_max_min_lower * (mean[4..5].hex.to_i - min[4..5].hex.to_i)).to_i.to_s(16).rjust(2,'0')
       puts "red: #{red}"
       puts "green: #{green}"
       puts "blue: #{blue}"
       color_gradient = red + green + blue
     elsif value > details[:mean] && value < details[:max]
-      red =   (max[0..1].hex + percent_max_min_upper * (mean[0..1].hex - max[0..1].hex)).to_i.to_s(16).rjust(2,'0')
-      green = (max[2..3].hex + percent_max_min_upper * (mean[2..3].hex - max[2..3].hex)).to_i.to_s(16).rjust(2,'0')
-      blue =  (max[4..5].hex + percent_max_min_upper * (mean[4..5].hex - max[4..5].hex)).to_i.to_s(16).rjust(2,'0')
+      red =   (mean[0..1].hex.to_i + percent_max_min_upper * (max[0..1].hex.to_i - mean[0..1].hex.to_i)).to_i.to_s(16).rjust(2,'0')
+      green = (mean[2..3].hex.to_i + percent_max_min_upper * (max[2..3].hex.to_i - mean[2..3].hex.to_i)).to_i.to_s(16).rjust(2,'0')
+      blue =  (mean[4..5].hex.to_i + percent_max_min_upper * (max[4..5].hex.to_i - mean[4..5].hex.to_i)).to_i.to_s(16).rjust(2,'0')
       puts "red: #{red}"
       puts "green: #{green}"
       puts "blue: #{blue}"
