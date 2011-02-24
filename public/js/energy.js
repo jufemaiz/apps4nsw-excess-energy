@@ -66,6 +66,7 @@ $(document).ready(function() {
 	// If we're doing the full page
 	mapCanvas = $('#mapCanvasFull');
 	if(mapCanvas.length > 0) {
+		$('.loading').css('display','none');
 
 		var latlng, mapCanvas, myOptions;
 		latlng = new google.maps.LatLng(-33.867, 151.206);
@@ -82,9 +83,10 @@ $(document).ready(function() {
 		$("#mapCanvasFull").css({'height':((window.innerHeight - $("#footer")[0].clientHeight - $("#header")[0].clientHeight)+'px')})
 
 	  	$.getJSON('/polygons.json', function(data) {
-			var lgas = {};
 			bounds = new google.maps.LatLngBounds();
 			$.each(data[0], function(i,lga) {
+				var lga_overlays = [];
+				var _lga = lgas[i+''];
 				$.each(lga, function(j,v) {
 					var latlngs = [];
 					$.each(v, function(index,value){
@@ -92,20 +94,85 @@ $(document).ready(function() {
 						latlngs.push(marker);
 						bounds.extend(marker);
 					});
-
+					var color = color_gradient(_lga['total_residential_energy_per_resident'],lga_stats['residential']['total']['per_resident']);
 					var lga_overlay = new google.maps.Polygon({
 				    	paths: latlngs,
-				    	strokeColor: "#2fb755",
-				    	strokeOpacity: 0.8,
+				    	strokeColor: color,
+				    	strokeOpacity: 1,
 				    	strokeWeight: 2,
-				    	fillColor: "#2fb755",
-				    	fillOpacity: 0.35
+				    	fillColor: color,
+				    	fillOpacity: 0.4
 				  	});
 				  	lga_overlay.setMap(map);
+					lga_overlays.push(lga_overlay);
+					var infowindow = new google.maps.InfoWindow({
+					    content: "<h3><a href='/lgas/"+ _lga.lga_code +"'>" + _lga.lga + " (" + _lga.lga_code + ")</a></h3><dl><dt>Totals</dt><dd><dl><dt>Population</dt><dd>" + _lga.population + "</dd><dt>Total Customers</dt><dd>" + _lga.total_customers + "</dd><dt>Total Energy</dt><dd>" + _lga.total_energy + "</dd><dt>Total Energy per Customer</dt><dd>" + _lga.total_energy_per_customer + "</dd><dt>Total Energy per Resident</dt><dd>" + _lga.total_energy_per_resident + "</dd></dl></dd><dt>Residential</dt><dd><dl><dt>Total Customers</dt><dd>" + _lga.residential_customers + "</dd><dt>Total Energy</dt><dd>" + _lga.total_residential_energy + "</dd><dt>per Customer</dt><dd>" + _lga.total_residential_energy_per_customer + "</dd><dt>per Resident</dt><dd>" + _lga.total_residential_energy_per_resident + "</dd></dl></dd><dt>Business</dt><dd><dl><dt>Total Customers</dt><dd>" + _lga.total_business_customers + "</dd><dt>Total Energy</dt><dd>" + _lga.total_business_energy + "</dd><dt>per Customer</dt><dd>" + _lga.total_business_energy_per_customer + "</dd></dl></dd></dl>"
+					});
+					google.maps.event.addListener(lga_overlay, 'click', function(event) {
+						infowindow.setPosition(event.latLng)
+						infowindow.open(map);
+					});
 				});
+				_lga['mapOverlays'] = lga_overlays;
 			});
 			map.fitBounds(bounds);
 	  	});
+	
+		$('dl.control a').click(function(ev){
+			ev.preventDefault();
+			ev.stopPropagation();
+			$('dl.control a').removeClass('active');
+			var el = $(ev.currentTarget);
+			var href = el.attr('href').replace('#','');
+			$.each(lgas,function(){
+				var color;
+				switch(href) {
+					case 'population':
+						color = color_gradient(this['population'],lga_stats['total']['population']);
+						break;
+					case 'total_customers':
+						color = color_gradient(this['total_customers'],lga_stats['total']['customers']);
+						break;
+					case 'total_energy':
+						color = color_gradient(this['total_energy'],lga_stats['total']['energy']);
+						break;
+					case 'total_energy_per_customer':
+						color = color_gradient(this['total_energy_per_customer'],lga_stats['total']['per_customer']);
+						break;
+					case 'total_energy_per_resident':
+						color = color_gradient(this['total_energy_per_resident'],lga_stats['total']['per_resident']);
+						break;
+					case 'residential_customers':
+						color = color_gradient(this['residential_customers'],lga_stats['residential']['total']['customers']);
+						break;
+					case 'total_residential_energy':
+						color = color_gradient(this['total_residential_energy'],lga_stats['residential']['total']['energy']);
+						break;
+					case 'total_residential_energy_per_customer':
+						color = color_gradient(this['total_residential_energy_per_customer'],lga_stats['residential']['total']['per_customer']);
+						break;
+					case 'total_residential_energy_per_resident':
+						color = color_gradient(this['total_residential_energy_per_resident'],lga_stats['residential']['total']['per_resident']);
+						break;
+					case 'total_business_customers':
+						color = color_gradient(this['total_business_customers'],lga_stats['business']['total']['customers']);
+						break;
+					case 'total_business_energy':
+						color = color_gradient(this['total_business_energy'],lga_stats['business']['total']['energy']);
+						break;
+					case 'total_business_energy_per_customer':
+						color = color_gradient(this['total_business_energy_per_customer'],lga_stats['business']['total']['per_customer']);
+						break;
+					default:
+						return false;
+				}
+				$.each(this['mapOverlays'],function(){
+					this.setOptions({strokeColor:color, fillColor:color});
+				});
+			});
+			el.addClass('active');
+		});
+		
 	}
 	// If we're doing head2head
 	if($('#content .head2head').length > 0) {
@@ -209,9 +276,9 @@ $(document).ready(function() {
 						color[0] = color_gradient(lga1['total_energy_per_resident'],lga_stats['total']['per_resident']);
 						color[1] = color_gradient(lga2['total_energy_per_resident'],lga_stats['total']['per_resident']);
 						break;
-					case 'total_residential_customers':
-						color[0] = color_gradient(lga1['total_residential_customers'],lga_stats['residential']['total']['customers']);
-						color[1] = color_gradient(lga2['total_residential_customers'],lga_stats['residential']['total']['customers']);
+					case 'residential_customers':
+						color[0] = color_gradient(lga1['residential_customers'],lga_stats['residential']['total']['customers']);
+						color[1] = color_gradient(lga2['residential_customers'],lga_stats['residential']['total']['customers']);
 						break;
 					case 'total_residential_energy':
 						color[0] = color_gradient(lga1['total_residential_energy'],lga_stats['residential']['total']['energy']);
@@ -257,15 +324,15 @@ $(document).ready(function() {
 				$(this).toggleClass('visible');
 			}).css({'display':''});
 		}
-		$('dl.control').hover(
-			function(){
-				$(this).addClass('open');
-			},
-			function(){
-				$(this).removeClass('open');
-			}
-		);
 	}
+	$('dl.control').hover(
+		function(){
+			$(this).addClass('open');
+		},
+		function(){
+			$(this).removeClass('open');
+		}
+	);
 });
 
 function color_gradient(value, details) {

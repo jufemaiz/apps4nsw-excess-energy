@@ -1,2 +1,38 @@
 #mapCanvasFull
+	#mapControl
+		%dl.control
+			%dt Map comparison by:
+			%dd
+				%a{ :href => '#population' } Population
+			%dd
+				%a{ :href => '#total_customers' } Total Energy
+			%dd
+				%a{ :href => '#total_energy' } Total Customers
+			%dd
+				%a{ :href => '#total_energy_per_customer' } Energy per Customer
+			%dd
+				%a{ :href => '#total_energy_per_resident' } Energy per Resident
+			%dd.separator
+				%a{ :href => '#total_residential_energy' } Residential Energy
+			%dd
+				%a{ :href => '#residential_customers' } Residential Customers
+			%dd
+				%a{ :href => '#total_residential_energy_per_customer' } Residential Energy per Customer
+			%dd
+				%a{ :href => '#total_residential_energy_per_resident' } Residential Energy per Resident
+			%dd.separator
+				%a{ :href => '#total_business_energy' } Business Energy
+			%dd
+				%a{ :href => '#total_business_customers' } Business Customers
+			%dd
+				%a{ :href => '#total_business_energy_per_customer' } Business Energy per Customer
 	#map
+	.loading(style="position: absolute; top: 0; width: 100%; padding-top: 10%; text-align: center;")
+		There exists a map here. It's just loading. Will be with you in a second.
+
+%script{:type => "text/javascript"}
+	var lgas = {}; var map, bounds;
+	- @lgas.each do |lga|
+		= "lgas[#{lga.lga_code}] = #{lga.to_json};"
+	= "var lga_stats = #{@lgas_stats.to_json}"
+	
