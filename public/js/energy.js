@@ -84,6 +84,7 @@ $(document).ready(function() {
 
 	  	$.getJSON('/polygons.json', function(data) {
 			bounds = new google.maps.LatLngBounds();
+			var infowindows = [];
 			$.each(data[0], function(i,lga) {
 				var lga_overlays = [];
 				var _lga = lgas[i+''];
@@ -106,12 +107,14 @@ $(document).ready(function() {
 				  	lga_overlay.setMap(map);
 					lga_overlays.push(lga_overlay);
 					var infowindow = new google.maps.InfoWindow({
-					    content: "<h3><a href='/lgas/"+ _lga.lga_code +"'>" + _lga.lga + " (" + _lga.lga_code + ")</a></h3><dl><dt>Totals</dt><dd><dl><dt>Population</dt><dd>" + _lga.population + "</dd><dt>Total Customers</dt><dd>" + _lga.total_customers + "</dd><dt>Total Energy</dt><dd>" + _lga.total_energy + "</dd><dt>Total Energy per Customer</dt><dd>" + _lga.total_energy_per_customer + "</dd><dt>Total Energy per Resident</dt><dd>" + _lga.total_energy_per_resident + "</dd></dl></dd><dt>Residential</dt><dd><dl><dt>Total Customers</dt><dd>" + _lga.residential_customers + "</dd><dt>Total Energy</dt><dd>" + _lga.total_residential_energy + "</dd><dt>per Customer</dt><dd>" + _lga.total_residential_energy_per_customer + "</dd><dt>per Resident</dt><dd>" + _lga.total_residential_energy_per_resident + "</dd></dl></dd><dt>Business</dt><dd><dl><dt>Total Customers</dt><dd>" + _lga.total_business_customers + "</dd><dt>Total Energy</dt><dd>" + _lga.total_business_energy + "</dd><dt>per Customer</dt><dd>" + _lga.total_business_energy_per_customer + "</dd></dl></dd></dl>"
+					    content: "<h3><a href='/lgas/"+ _lga.lga_code +"'>" + _lga.lga + " (" + _lga.lga_code + ")</a></h3><dl><dt>Totals</dt><dd><dl><dt>Population</dt><dd>" + _lga.population + "</dd><dt>Total Customers</dt><dd>" + _lga.total_customers + "</dd><dt>Total Energy</dt><dd>" + _lga.total_energy + "</dd><dt>Total Energy per Customer</dt><dd>" + _lga.total_energy_per_customer + "</dd><dt>Total Energy per Resident</dt><dd>" + _lga.total_energy_per_resident + "</dd></dl></dd><!--<dt>Residential</dt><dd><dl><dt>Total Customers</dt><dd>" + _lga.residential_customers + "</dd><dt>Total Energy</dt><dd>" + _lga.total_residential_energy + "</dd><dt>per Customer</dt><dd>" + _lga.total_residential_energy_per_customer + "</dd><dt>per Resident</dt><dd>" + _lga.total_residential_energy_per_resident + "</dd></dl></dd><dt>Business</dt><dd><dl><dt>Total Customers</dt><dd>" + _lga.total_business_customers + "</dd><dt>Total Energy</dt><dd>" + _lga.total_business_energy + "</dd><dt>per Customer</dt><dd>" + _lga.total_business_energy_per_customer + "</dd></dl></dd>--></dl>"
 					});
 					google.maps.event.addListener(lga_overlay, 'click', function(event) {
+						$.each(infowindows,function(){ this.close(); });
 						infowindow.setPosition(event.latLng)
 						infowindow.open(map);
 					});
+					infowindows.push(infowindow);
 				});
 				_lga['mapOverlays'] = lga_overlays;
 			});
