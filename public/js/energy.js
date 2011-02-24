@@ -48,7 +48,7 @@ $(document).ready(function() {
 					latlngs.push(marker);
 					bounds.extend(marker);
 				});
-
+				
 				var lga_overlay = new google.maps.Polygon({
 			    	paths: latlngs,
 			    	strokeColor: "#2fb755",
@@ -62,6 +62,8 @@ $(document).ready(function() {
 			});
 	  	});
 	}
+	
+	// If we're doing the full page
 	mapCanvas = $('#mapCanvasFull');
 	if(mapCanvas.length > 0) {
 
@@ -136,7 +138,8 @@ $(document).ready(function() {
 							latlngs.push(marker);
 							bounds1.extend(marker);
 						});
-						var color = $($('#lga1 span.percentage.color')[5]).css('background-color');
+						// var color = $($('#lga1 span.percentage.color')[5]).css('background-color');
+						var color = color_gradient(lga1['total_residential_energy_per_resident'],lga_stats['residential']['total']['per_resident']);
 						var lga_overlay = new google.maps.Polygon({
 					    	paths: latlngs,
 					    	strokeColor: color,
@@ -145,6 +148,7 @@ $(document).ready(function() {
 					    	fillColor: color,
 					    	fillOpacity: 0.35
 					  	});
+						lga1['mapOverlay'] = lga_overlay;
 					  	lga_overlay.setMap(map1);
 						map1.fitBounds(bounds1);
 					});
@@ -161,7 +165,8 @@ $(document).ready(function() {
 							latlngs.push(marker);
 							bounds2.extend(marker);
 						});
-						var color = $($('#lga2 span.percentage.color')[5]).css('background-color');
+						// var color = $($('#lga2 span.percentage.color')[5]).css('background-color');
+						var color = color_gradient(lga2['total_residential_energy_per_resident'],lga_stats['residential']['total']['per_resident']);
 						var lga_overlay = new google.maps.Polygon({
 					    	paths: latlngs,
 					    	strokeColor: color,
@@ -170,11 +175,74 @@ $(document).ready(function() {
 					    	fillColor: color,
 					    	fillOpacity: 0.35
 					  	});
+						lga2['mapOverlay'] = lga_overlay;
 					  	lga_overlay.setMap(map2);
 						map2.fitBounds(bounds2);
 					});
 			  	});
 			}
+			
+			$('dl.control a').click(function(ev){
+				ev.preventDefault();
+				ev.stopPropagation();
+				var el = $(ev.currentTarget);
+				var href = el.attr('href').replace('#','');
+				var color = [];
+				switch(href) {
+					case 'population':
+						color[0] = color_gradient(lga1['population'],lga_stats['total']['population']);
+						color[1] = color_gradient(lga2['population'],lga_stats['total']['population']);
+						break;
+					case 'total_customers':
+						color[0] = color_gradient(lga1['total_customers'],lga_stats['total']['customers']);
+						color[1] = color_gradient(lga2['total_customers'],lga_stats['total']['customers']);
+						break;
+					case 'total_energy':
+						color[0] = color_gradient(lga1['total_energy'],lga_stats['total']['energy']);
+						color[1] = color_gradient(lga2['total_energy'],lga_stats['total']['energy']);
+						break;
+					case 'total_energy_per_customer':
+						color[0] = color_gradient(lga1['total_energy_per_customer'],lga_stats['total']['per_customer']);
+						color[1] = color_gradient(lga2['total_energy_per_customer'],lga_stats['total']['per_customer']);
+						break;
+					case 'total_energy_per_resident':
+						color[0] = color_gradient(lga1['total_energy_per_resident'],lga_stats['total']['per_resident']);
+						color[1] = color_gradient(lga2['total_energy_per_resident'],lga_stats['total']['per_resident']);
+						break;
+					case 'total_residential_customers':
+						color[0] = color_gradient(lga1['total_residential_customers'],lga_stats['residential']['total']['customers']);
+						color[1] = color_gradient(lga2['total_residential_customers'],lga_stats['residential']['total']['customers']);
+						break;
+					case 'total_residential_energy':
+						color[0] = color_gradient(lga1['total_residential_energy'],lga_stats['residential']['total']['energy']);
+						color[1] = color_gradient(lga2['total_residential_energy'],lga_stats['residential']['total']['energy']);
+						break;
+					case 'total_residential_energy_per_customer':
+						color[0] = color_gradient(lga1['total_residential_energy_per_customer'],lga_stats['residential']['total']['per_customer']);
+						color[1] = color_gradient(lga2['total_residential_energy_per_customer'],lga_stats['residential']['total']['per_customer']);
+						break;
+					case 'total_residential_energy_per_resident':
+						color[0] = color_gradient(lga1['total_residential_energy_per_resident'],lga_stats['residential']['total']['per_resident']);
+						color[1] = color_gradient(lga2['total_residential_energy_per_resident'],lga_stats['residential']['total']['per_resident']);
+						break;
+					case 'total_business_customers':
+						color[0] = color_gradient(lga1['total_business_customers'],lga_stats['business']['total']['customers']);
+						color[1] = color_gradient(lga2['total_business_customers'],lga_stats['business']['total']['customers']);
+						break;
+					case 'total_business_energy':
+						color[0] = color_gradient(lga1['total_business_energy'],lga_stats['business']['total']['energy']);
+						color[1] = color_gradient(lga2['total_business_energy'],lga_stats['business']['total']['energy']);
+						break;
+					case 'total_business_energy_per_customer':
+						color[0] = color_gradient(lga1['total_business_energy_per_customer'],lga_stats['business']['total']['per_customer']);
+						color[1] = color_gradient(lga2['total_business_energy_per_customer'],lga_stats['business']['total']['per_customer']);
+						break;
+					default:
+						return false;
+				}
+				lga1['mapOverlay'].setOptions({strokeColor:color[0], fillColor:color[0]});
+				lga2['mapOverlay'].setOptions({strokeColor:color[1], fillColor:color[1]});
+			});
 		});
 
 		if($('#lgaH2H').length > 0) {
@@ -197,16 +265,39 @@ $(document).ready(function() {
 				$(this).removeClass('open');
 			}
 		);
-		$('dl.control a').click(function(ev){
-			// ev.preventDefault();
-			// ev.stopPropagation();
-			var link = $(ev.target).attr('href').replace("#","");
-			console.log(link);
-		});
 	}
 });
 
 function color_gradient(value, details) {
-	var max = "ff3333", mean = "ffe539", min = "49cd6e", color_gradient = min;
-    
+	var max = "ff3333", average = "ffe539", min = "49cd6e", color_gradient = min;
+	
+	var percent = value / (details['max']);
+    var percent_max_min_lower = (value - details['min']) / (details['average'] - details['min']);
+    var percent_max_min_upper = (value - details['average']) / (details['max'] - details['average']);
+
+	if(value <= details['min']){
+      color_gradient = min;
+	} else if (value == details['average']) {
+		value == details['average'];
+	    color_gradient = average;
+	} else if (value >= details['max']) {
+		color_gradient = max;
+	} else if (value > details['min'] && value < details['average']) {
+		var red =   pad(Math.round(parseInt(min.substring(0,2),16) + percent_max_min_lower * (parseInt(average.substring(0,2),16) - parseInt(min.substring(0,2),16))).toString(16),2);
+		var green = pad(Math.round(parseInt(min.substring(2,4),16) + percent_max_min_lower * (parseInt(average.substring(2,4),16) - parseInt(min.substring(2,4),16))).toString(16),2);
+		var blue =  pad(Math.round(parseInt(min.substring(4,6),16) + percent_max_min_lower * (parseInt(average.substring(4,6),16) - parseInt(min.substring(4,6),16))).toString(16),2);
+		color_gradient = red + green + blue
+	} else if (value > details['average'] && value < details['max']) {
+		var red =   pad(Math.round(parseInt(average.substring(0,2),16) + percent_max_min_upper * (parseInt(max.substring(0,2),16) - parseInt(average.substring(0,2),16))).toString(16),2);
+		var green = pad(Math.round(parseInt(average.substring(2,4),16) + percent_max_min_upper * (parseInt(max.substring(2,4),16) - parseInt(average.substring(2,4),16))).toString(16),2);
+		var blue =  pad(Math.round(parseInt(average.substring(4,6),16) + percent_max_min_upper * (parseInt(max.substring(4,6),16) - parseInt(average.substring(4,6),16))).toString(16),2);
+		color_gradient = red + green + blue
+	}
+    return "#" + color_gradient;
+}
+
+function pad(number, length) {
+	var str = '' + number;
+	while (str.length < length) { str = '0' + str; }
+    return str;
 }

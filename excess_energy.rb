@@ -322,48 +322,48 @@ helpers do
     unless lgas.nil? || lgas.length == 0
       lgas_max_mins = { :total => { :energy => nil, :customers => nil, :population => nil }, :residential => { :total  => { :energy => nil, :customers => nil }, :normal => { :energy => nil, :customers => nil }, :controlled_load => { :energy => nil, :customers => nil } }, :business => { :total  => { :energy => nil, :customers => nil }, :small => { :energy => nil, :customers => nil }, :large => { :energy => nil, :customers => nil } } }
       # Totals
-      lgas_max_mins[:total][:energy] = max_min_mean_median(@lgas.collect{|l| l.total_energy})
-      lgas_max_mins[:total][:customers] = max_min_mean_median(@lgas.collect{|l| l.total_customers})
-      lgas_max_mins[:total][:population] = max_min_mean_median(@lgas.collect{|l| l.population})
-      lgas_max_mins[:total][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.total_energy_per_customer})
-      lgas_max_mins[:total][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.total_energy_per_resident})
+      lgas_max_mins[:total][:energy] = max_min_average_median(@lgas.collect{|l| l.total_energy})
+      lgas_max_mins[:total][:customers] = max_min_average_median(@lgas.collect{|l| l.total_customers})
+      lgas_max_mins[:total][:population] = max_min_average_median(@lgas.collect{|l| l.population})
+      lgas_max_mins[:total][:per_customer] = max_min_average_median(@lgas.collect{|l| l.total_energy_per_customer})
+      lgas_max_mins[:total][:per_resident] = max_min_average_median(@lgas.collect{|l| l.total_energy_per_resident})
       
       # Residential
-      lgas_max_mins[:residential][:total][:energy] = max_min_mean_median(@lgas.collect{|l| l.total_residential_energy})
-      lgas_max_mins[:residential][:total][:customers] = max_min_mean_median(@lgas.collect{|l| l.residential_customers})
-      lgas_max_mins[:residential][:total][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.total_residential_energy_per_customer})
-      lgas_max_mins[:residential][:total][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.total_residential_energy_per_resident})
+      lgas_max_mins[:residential][:total][:energy] = max_min_average_median(@lgas.collect{|l| l.total_residential_energy})
+      lgas_max_mins[:residential][:total][:customers] = max_min_average_median(@lgas.collect{|l| l.residential_customers})
+      lgas_max_mins[:residential][:total][:per_customer] = max_min_average_median(@lgas.collect{|l| l.total_residential_energy_per_customer})
+      lgas_max_mins[:residential][:total][:per_resident] = max_min_average_median(@lgas.collect{|l| l.total_residential_energy_per_resident})
       
-      lgas_max_mins[:residential][:normal][:energy] = max_min_mean_median(@lgas.collect{|l| l.residential_energy})
-      lgas_max_mins[:residential][:normal][:customers] = max_min_mean_median(@lgas.collect{|l| l.residential_customers})
-      lgas_max_mins[:residential][:normal][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.residential_energy_per_customer})
-      lgas_max_mins[:residential][:normal][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.residential_energy_per_resident})
+      lgas_max_mins[:residential][:normal][:energy] = max_min_average_median(@lgas.collect{|l| l.residential_energy})
+      lgas_max_mins[:residential][:normal][:customers] = max_min_average_median(@lgas.collect{|l| l.residential_customers})
+      lgas_max_mins[:residential][:normal][:per_customer] = max_min_average_median(@lgas.collect{|l| l.residential_energy_per_customer})
+      lgas_max_mins[:residential][:normal][:per_resident] = max_min_average_median(@lgas.collect{|l| l.residential_energy_per_resident})
       
-      lgas_max_mins[:residential][:controlled_load][:energy] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_energy})
-      lgas_max_mins[:residential][:controlled_load][:customers] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_customers})
-      lgas_max_mins[:residential][:controlled_load][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_energy_per_customer})
-      lgas_max_mins[:residential][:controlled_load][:per_resident] = max_min_mean_median(@lgas.collect{|l| l.residential_controlled_load_energy_per_resident})
+      lgas_max_mins[:residential][:controlled_load][:energy] = max_min_average_median(@lgas.collect{|l| l.residential_controlled_load_energy})
+      lgas_max_mins[:residential][:controlled_load][:customers] = max_min_average_median(@lgas.collect{|l| l.residential_controlled_load_customers})
+      lgas_max_mins[:residential][:controlled_load][:per_customer] = max_min_average_median(@lgas.collect{|l| l.residential_controlled_load_energy_per_customer})
+      lgas_max_mins[:residential][:controlled_load][:per_resident] = max_min_average_median(@lgas.collect{|l| l.residential_controlled_load_energy_per_resident})
       
       # Business
-      lgas_max_mins[:business][:total][:energy] = max_min_mean_median(@lgas.collect{|l| l.total_business_energy})
-      lgas_max_mins[:business][:total][:customers] = max_min_mean_median(@lgas.collect{|l| l.total_business_customers})
-      lgas_max_mins[:business][:total][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.total_business_energy_per_customer})
+      lgas_max_mins[:business][:total][:energy] = max_min_average_median(@lgas.collect{|l| l.total_business_energy})
+      lgas_max_mins[:business][:total][:customers] = max_min_average_median(@lgas.collect{|l| l.total_business_customers})
+      lgas_max_mins[:business][:total][:per_customer] = max_min_average_median(@lgas.collect{|l| l.total_business_energy_per_customer})
 
-      lgas_max_mins[:business][:small][:energy] = max_min_mean_median(@lgas.collect{|l| l.small_business_energy})
-      lgas_max_mins[:business][:small][:customers] = max_min_mean_median(@lgas.collect{|l| l.small_business_customers})
-      lgas_max_mins[:business][:small][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.small_business_energy_per_customer})
+      lgas_max_mins[:business][:small][:energy] = max_min_average_median(@lgas.collect{|l| l.small_business_energy})
+      lgas_max_mins[:business][:small][:customers] = max_min_average_median(@lgas.collect{|l| l.small_business_customers})
+      lgas_max_mins[:business][:small][:per_customer] = max_min_average_median(@lgas.collect{|l| l.small_business_energy_per_customer})
 
-      lgas_max_mins[:business][:large][:energy] = max_min_mean_median(@lgas.collect{|l| l.large_business_energy})
-      lgas_max_mins[:business][:large][:customers] = max_min_mean_median(@lgas.collect{|l| l.large_business_customers})
-      lgas_max_mins[:business][:large][:per_customer] = max_min_mean_median(@lgas.collect{|l| l.large_business_energy_per_customer})
+      lgas_max_mins[:business][:large][:energy] = max_min_average_median(@lgas.collect{|l| l.large_business_energy})
+      lgas_max_mins[:business][:large][:customers] = max_min_average_median(@lgas.collect{|l| l.large_business_customers})
+      lgas_max_mins[:business][:large][:per_customer] = max_min_average_median(@lgas.collect{|l| l.large_business_energy_per_customer})
 
     end
     lgas_max_mins
   end
   
-  def max_min_mean_median(ar)
+  def max_min_average_median(ar)
     unless ar.nil? || !(ar.length > 0)
-      {:all => ar, :max => ar.max,:min => ar.min, :mean => ar.inject{ |sum, el| sum + el }.to_f / ar.size}
+      {:all => ar, :max => ar.max,:min => ar.min, :average => ar.inject{ |sum, el| sum + el }.to_f / ar.size}
     end
   end
   
@@ -412,37 +412,37 @@ helpers do
   
   def color_gradient(value, details)
     max = "ff3333"
-    mean = "ffe539"
-    # mean = "39a9ff"
+    average = "ffe539"
+    # average = "39a9ff"
     min = "49cd6e"
     color_gradient = min
     value.to_f! if value.class == "Fixnum"
     # puts value.class
 
     percent = value / (details[:max])
-    percent_max_min_lower = (value - details[:min]).to_f / (details[:mean] - details[:min])
-    percent_max_min_upper = (value - details[:mean]).to_f / (details[:max] - details[:mean])
+    percent_max_min_lower = (value - details[:min]).to_f / (details[:average] - details[:min])
+    percent_max_min_upper = (value - details[:average]).to_f / (details[:max] - details[:average])
     
     puts "value: #{value}\n percentage: #{percent}\npercent_max_min_lower: #{percent_max_min_lower}\npercent_max_min_upper: #{percent_max_min_upper}"
     
     if value <= details[:min]
       color_gradient = min
-    elsif value == details[:mean]
-      color_gradient = mean
+    elsif value == details[:average]
+      color_gradient = average
     elsif value >= details[:max]
       color_gradient = max
-    elsif value > details[:min] && value < details[:mean]
-      red =   (min[0..1].hex.to_i + percent_max_min_lower * (mean[0..1].hex.to_i - min[0..1].hex.to_i)).to_i.to_s(16).rjust(2,'0')
-      green = (min[2..3].hex.to_i + percent_max_min_lower * (mean[2..3].hex.to_i - min[2..3].hex.to_i)).to_i.to_s(16).rjust(2,'0')
-      blue =  (min[4..5].hex.to_i + percent_max_min_lower * (mean[4..5].hex.to_i - min[4..5].hex.to_i)).to_i.to_s(16).rjust(2,'0')
+    elsif value > details[:min] && value < details[:average]
+      red =   (min[0..1].hex.to_i + percent_max_min_lower * (average[0..1].hex.to_i - min[0..1].hex.to_i)).to_i.to_s(16).rjust(2,'0')
+      green = (min[2..3].hex.to_i + percent_max_min_lower * (average[2..3].hex.to_i - min[2..3].hex.to_i)).to_i.to_s(16).rjust(2,'0')
+      blue =  (min[4..5].hex.to_i + percent_max_min_lower * (average[4..5].hex.to_i - min[4..5].hex.to_i)).to_i.to_s(16).rjust(2,'0')
       puts "red: #{red}"
       puts "green: #{green}"
       puts "blue: #{blue}"
       color_gradient = red + green + blue
-    elsif value > details[:mean] && value < details[:max]
-      red =   (mean[0..1].hex.to_i + percent_max_min_upper * (max[0..1].hex.to_i - mean[0..1].hex.to_i)).to_i.to_s(16).rjust(2,'0')
-      green = (mean[2..3].hex.to_i + percent_max_min_upper * (max[2..3].hex.to_i - mean[2..3].hex.to_i)).to_i.to_s(16).rjust(2,'0')
-      blue =  (mean[4..5].hex.to_i + percent_max_min_upper * (max[4..5].hex.to_i - mean[4..5].hex.to_i)).to_i.to_s(16).rjust(2,'0')
+    elsif value > details[:average] && value < details[:max]
+      red =   (average[0..1].hex.to_i + percent_max_min_upper * (max[0..1].hex.to_i - average[0..1].hex.to_i)).to_i.to_s(16).rjust(2,'0')
+      green = (average[2..3].hex.to_i + percent_max_min_upper * (max[2..3].hex.to_i - average[2..3].hex.to_i)).to_i.to_s(16).rjust(2,'0')
+      blue =  (average[4..5].hex.to_i + percent_max_min_upper * (max[4..5].hex.to_i - average[4..5].hex.to_i)).to_i.to_s(16).rjust(2,'0')
       puts "red: #{red}"
       puts "green: #{green}"
       puts "blue: #{blue}"
