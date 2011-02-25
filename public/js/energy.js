@@ -327,6 +327,40 @@ $(document).ready(function() {
 				$(this).toggleClass('visible');
 			}).css({'display':''});
 		}
+		
+		$('.head2head .lga dl').each(function(){
+			var el = $(this);
+			el.find('dd').hover(
+				function(){
+					var el_on = $(this);
+					var elements = $('.'+el_on[0].className);
+					var lga1_showing = true;
+					if(el_on.parentsUntil('.lga').last().parent()[0].id != 'lga1') {
+						lga1_showing = false;
+					}
+					var left = (lga1_showing ? '-10px' : (-1 * (el.width() + 20) )+'px');
+					var lga1_value = elements.first().find('span.number')[0].textContent.replace(/,/g,'')*1;
+					var lga2_value = elements.last().find('span.number')[0].textContent.replace(/,/g,'')*1;
+					var lga1_percent = Math.round(100 * lga1_value / lga2_value);
+					var lga2_percent = Math.round(100 * lga2_value / lga1_value);
+					var highlight = $('<div class="highlight"><div class="content"><div class="column span-12" style="text-align: right;"><span class="percent">' + (lga1_percent > 100 ? (lga1_percent - 100) + '%</span> <strong>more</strong> than ': (100 - lga1_percent) + '%</span> <strong>less</strong> than ' ) + lga2['lga'] + ' </div><div class="column span-12 last" style="text-align: left;"><span class="percent">' + (lga2_percent > 100 ? (lga2_percent - 100) + '%</span> <strong>more</strong> than ': (100 - lga2_percent) + '%</span> <strong>less</strong> than ' ) + lga1['lga'] + ' </div></div></div>');
+					
+					highlight.css({'position':'absolute', 'z-index':'75','top': '-'+(el_on.prev().height()+10)+'px', 'left':left, 'width':(2 * el_on.width() +10)+'px','padding':(el_on.prev().height() + el_on.height() + 10)+'px 10px 10px 10px', 'border':'2px solid #ccc', '-moz-border-radius':'10px', '-webkit-border-radius':'10px', 'border-radius':'10px', 'background':'#fff' });
+
+					el_on.append(highlight);
+					$('.'+el_on[0].className).prev().css({'position':'relative', 'z-index':'100'});
+					$('.'+el_on[0].className).find('span').css({'z-index':'101'});
+					$('.'+el_on[0].className).find('span.number').css({'z-index':'102'});
+				},
+				function(){
+					var el_off = $(this);
+					el_off.find('.highlight').remove();
+					$('.lga').find('dt').css({'z-index':'0'});
+					$('.lga').find('span').css({'z-index':'50'});
+					$('.lga').find('span.number').css({'z-index':'51'});
+				}
+			);
+		});
 	}
 	$('dl.control').hover(
 		function(){
@@ -336,6 +370,7 @@ $(document).ready(function() {
 			$(this).removeClass('open');
 		}
 	);
+	
 });
 
 function color_gradient(value, details) {

@@ -52,6 +52,10 @@
 			%dd
 				%a{:href=>"http://www.#{@lga.lga.downcase.gsub(' ', '')}.nsw.gov.au"}
 					Website
+			%dt Local Government Census Data
+			%dd
+				%a{:href=>"http://www.censusdata.abs.gov.au/ABSNavigation/prenav/ProductSelect?newproducttype=QuickStats&period=2006&action=401&areacode=LGA#{@lga.lga_code}"}
+					= "LGA#{@lga.lga_code}"
 	.column.span-12.last{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Residential|Small%20Business|Large%20Business&chdlp=b&chco=2fb755&chd=t:#{100*@lga.residential_customers/@lga.total_customers},#{100*@lga.small_business_customers/@lga.total_customers},#{100*@lga.large_business_customers/@lga.total_customers}')"}
 		%dl
 			%dt Customers
