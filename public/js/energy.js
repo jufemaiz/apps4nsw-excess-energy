@@ -340,7 +340,7 @@ $(document).ready(function() {
 					}
 					var left = (lga1_showing ? '-10px' : (-1 * (el.width() + 20) )+'px');
 					var lga1_value = elements.first().find('span.number').html().replace(/,/g,'')*1;
-					var lga2_value = elements.last().find('span.number')html().replace(/,/g,'')*1;
+					var lga2_value = elements.last().find('span.number').html().replace(/,/g,'')*1;
 					var lga1_percent = Math.round(100 * lga1_value / lga2_value);
 					var lga2_percent = Math.round(100 * lga2_value / lga1_value);
 					var highlight = $('<div class="highlight"><div class="content"><div class="column span-12" style="text-align: right;"><span class="percent">' + (lga1_percent > 100 ? (lga1_percent - 100) + '%</span> <strong>more</strong> than ': (100 - lga1_percent) + '%</span> <strong>less</strong> than ' ) + lga2['lga'] + ' </div><div class="column span-12 last" style="text-align: left;"><span class="percent">' + (lga2_percent > 100 ? (lga2_percent - 100) + '%</span> <strong>more</strong> than ': (100 - lga2_percent) + '%</span> <strong>less</strong> than ' ) + lga1['lga'] + ' </div></div></div>');
