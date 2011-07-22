@@ -1,2 +1,2 @@
-require 'excess_energy'
+require './excess_energy'
 run Sinatra::Application
