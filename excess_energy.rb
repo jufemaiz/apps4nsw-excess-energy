@@ -1,3 +1,5 @@
+# excess_energy.rb
+
 require 'rubygems'
 require 'sinatra'
 require 'open-uri'
