@@ -1,0 +1,9 @@
+linters:
+  IdNames:
+    enabled: true
+    style: camel_case
+  InlineStyles:
+    enabled: false
+  LineLength:
+    enabled: true
+    max: 200

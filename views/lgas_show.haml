@@ -1,197 +1,195 @@
 .container
-	.column.span-16
-		%h1
-			%a{:href=>'/lgas'} Local Government Area
-			&rarr;
-			= @lga.lga_name
-	.column.span-8.last
-		%form{ :action => "/lgas/#{@lga.lga_code}", :method => "get", :id => 'lgaH2HShortcut' }
-			%fieldset
-				%legend
-					Compare
-					= "#{@lga_code}"
-					to another
-					%abbr{ :title => "Local Government Area" } LGA
-				.input.select
-					%select{ :name => "lgas" }
-						- @lgas.each do |lga|
-							- unless lga.lga_code == @lga.lga_code
-								%option{ :value => lga.lga_code.to_s }
-									= lga.lga_name
-				.input.submit
-					%input{ :type => "submit", :value => "Compare" }
+  .column.span-16
+    %h1
+      %a{ href: '/lgas' } Local Government Area
+      &rarr;
+      = @lga.lga_name
+  .column.span-8.last
+    %form{ action: "/lgas/#{@lga.lga_code}", method: 'get', id: 'lgaH2HShortcut' }
+      %fieldset
+        %legend
+          Compare #{@lga_code} to another
+          %abbr{ title: 'Local Government Area' } LGA
+        .input.select
+          %select{ name: 'lgas' }
+            - @lgas.each do |lga|
+              - unless lga.lga_code == @lga.lga_code
+                %option{ value: lga.lga_code.to_s }
+                  = lga.lga_name
+        .input.submit
+          %input{ type: 'submit', value: 'Compare' }
 
-#mapCanvas.collapsed
-	#map
-	#controller
-		%span
-			Expand
+.collapsed#mapCanvas
+  #map
+  #controller
+    %span
+      Expand
 .container
-	.column.span-24.last
-		%h2 General Information
-	.column.span-12
-		%dl
-			%dt Population
-			%dd
-				%span.number.important
-					= commify @lga.population
-				residents
-			%dd
-				%span.number
-					= commify (@lga.population.to_f / @lga.residential_customers)
-				residents / customer
-			%dd
-				%span.number
-					= commify (@lga.population.to_f / (@lga.large_business_customers + @lga.small_business_customers))
-				residents / business customer
-			%dd
-				%span.number
-					= commify (@lga.population.to_f / (@lga.residential_customers + @lga.large_business_customers + @lga.small_business_customers))
-				residents / total customers
-			%dt Council
-			%dd
-				%a{:href=>"http://www.#{@lga.lga.downcase.gsub(' ', '')}.nsw.gov.au"}
-					Website
-			%dt Local Government Census Data
-			%dd
-				%a{:href=>"http://www.censusdata.abs.gov.au/ABSNavigation/prenav/ProductSelect?newproducttype=QuickStats&period=2006&action=401&areacode=LGA#{@lga.lga_code}"}
-					= "LGA#{@lga.lga_code}"
-	.column.span-12.last{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Residential|Small%20Business|Large%20Business&chdlp=b&chco=2fb755&chd=t:#{100*@lga.residential_customers/@lga.total_customers},#{100*@lga.small_business_customers/@lga.total_customers},#{100*@lga.large_business_customers/@lga.total_customers}')"}
-		%dl
-			%dt Customers
-			%dd
-				%dl
-					%dt Residential
-					%dd
-						%span.number
-							= commify @lga.residential_customers
-					%dt Business
-					%dd
-						%span.number
-							= commify @lga.small_business_customers
-						small business
-					%dd
-						%span.number
-							= commify @lga.large_business_customers
-						large business
-					%dd.sub-total
-						%span.number
-							= commify @lga.small_business_customers + @lga.large_business_customers
-						total business
-					%dt Total Customers
-					%dd.total
-						%span.number.important
-							= commify @lga.residential_customers + @lga.small_business_customers + @lga.large_business_customers
-						
-	.column.span-24.last
-		%h2 Total Energy
-	.column.span-8
-		%dl
-			%dt Total Customers
-			%dd
-				%span.number.important
-					= commify @lga.total_customers
-				customers
-	.column.span-8
-		%dl
-			%dt Energy
-			%dd
-				%span.number.important
-					= commify @lga.total_energy
-				%acronym{:title=>"kilowatt hours"} kWh
-			%dd
-				%span.number.important
-					= commify @lga.total_energy.to_f / @lga.total_customers
-				%acronym{:title=>"kilowatt hours"} kWh
-				= "/ customer"
-	.column.span-8.last{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Residential|Small%20Business|Large%20Business&chdlp=b&chco=2fb755&chd=t:#{100*@lga.total_residential_energy/@lga.total_energy},#{100*@lga.small_business_energy/@lga.total_energy},#{100*@lga.large_business_energy/@lga.total_energy}')"}
-	.column.span-12
-		%h2 Residential Energy
-		%dl{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Normal|Hot%20Water&chdlp=b&chco=2fb755&chd=t:#{100*@lga.residential_energy/@lga.total_residential_energy},#{100*@lga.residential_controlled_load_energy/@lga.total_residential_energy}')"}
-			%dt Residential
-			%dd
-				%span.number
-					= commify @lga.residential_energy
-				%acronym{:title=>"kilowatt hours"} kWh
-			%dd
-				%span.number
-					= commify @lga.residential_customers
-				customers
-			%dd
-				%span.number
-					= commify (@lga.residential_energy / @lga.residential_customers).to_i
-				%acronym{:title=>"kilowatt hours"} kWh
-				= "/ customer"
-			%dt Residential Hot Water
-			%dd
-				%span.number
-					= commify @lga.residential_controlled_load_energy
-				%acronym{:title=>"kilowatt hours"} kWh
-			%dd
-				%span.number
-					= commify @lga.residential_controlled_load_customers
-				customers
-			%dt Total Residential
-			%dd
-				%span.number.important
-					= commify @lga.residential_energy + @lga.residential_controlled_load_energy
-				%acronym{:title=>"kilowatt hours"} kWh
-			%dd
-				%span.number.important
-					= commify (@lga.residential_energy + @lga.residential_controlled_load_energy) / @lga.residential_customers
-				%acronym{:title=>"kilowatt hours"} kWh
-				= "/ customer"
-			%dd
-				%span.number.important
-					= commify (@lga.residential_energy + @lga.residential_controlled_load_energy) / @lga.population
-				%acronym{:title=>"kilowatt hours"} kWh
-				= "/ resident"
-		
-	.column.span-12.last
-		%h2 Business Energy
-		%dl{:style => "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Small%20Business|Large%20Business&chdlp=b&chco=2fb755&chd=t:#{100*@lga.small_business_energy/@lga.total_business_energy},#{100*@lga.large_business_energy/@lga.total_business_energy}')"}
-			%dt Small Business
-			%dd
-				%span.number
-					= commify @lga.small_business_energy
-				%acronym{:title=>"kilowatt hours"} kWh
-			%dd
-				%span.number
-					= commify @lga.small_business_customers
-				customers
-			%dd
-				%span.number
-					= commify @lga.small_business_energy.to_f / @lga.small_business_customers
-				%acronym{:title=>"kilowatt hours"} kWh
-				= "/ customer"
-			%dt Large Business
-			%dd
-				%span.number
-					= commify @lga.large_business_energy
-				%acronym{:title=>"kilowatt hours"} kWh
-			%dd
-				%span.number
-					= commify @lga.large_business_customers
-				customers
-			%dd
-				%span.number
-					= commify @lga.large_business_energy.to_f / @lga.large_business_customers
-				%acronym{:title=>"kilowatt hours"} kWh
-				= "/ customer"
-			%dt Total Business 
-			%dd
-				%span.number.important
-					= commify @lga.small_business_energy + @lga.large_business_energy
-				%acronym{:title=>"kilowatt hours"} kWh
-			%dd
-				%span.number.important
-					= commify @lga.small_business_customers + @lga.large_business_customers
-				customers
-			%dd
-				%span.number.important
-					= commify @lga.large_business_energy.to_f / (@lga.small_business_customers + @lga.large_business_customers)
-				%acronym{:title=>"kilowatt hours"} kWh
-				= "/ customer"
+  .column.span-24.last
+    %h2 General Information
+  .column.span-12
+    %dl
+      %dt Population
+      %dd
+        %span.number.important
+          = commify(@lga.population)
+        residents
+      %dd
+        %span.number
+          = commify((@lga.population.to_f / @lga.residential_customers))
+        residents / customer
+      %dd
+        %span.number
+          = commify((@lga.population.to_f / (@lga.large_business_customers + @lga.small_business_customers)))
+        residents / business customer
+      %dd
+        %span.number
+          = commify((@lga.population.to_f / (@lga.residential_customers + @lga.large_business_customers + @lga.small_business_customers)))
+        residents / total customers
+      %dt Council
+      %dd
+        %a{ href: "http://www.#{@lga.lga.downcase.delete(' ')}.nsw.gov.au" }
+          Website
+      %dt Local Government Census Data
+      %dd
+        %a{ href: "http://www.censusdata.abs.gov.au/ABSNavigation/prenav/ProductSelect?newproducttype=QuickStats&period=2006&action=401&areacode=LGA#{@lga.lga_code}" }
+          LGA#{@lga.lga_code}
+  .column.span-12.last{ style: "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Residential|Small%20Business|Large%20Business&chdlp=b&chco=2fb755&chd=t:#{100 * @lga.residential_customers / @lga.total_customers},#{100 * @lga.small_business_customers / @lga.total_customers},#{100 * @lga.large_business_customers / @lga.total_customers}')" }
+    %dl
+      %dt Customers
+      %dd
+        %dl
+          %dt Residential
+          %dd
+            %span.number
+              = commify(@lga.residential_customers)
+          %dt Business
+          %dd
+            %span.number
+              = commify(@lga.small_business_customers)
+            small business
+          %dd
+            %span.number
+              = commify(@lga.large_business_customers)
+            large business
+          %dd.sub-total
+            %span.number
+              = commify(@lga.small_business_customers + @lga.large_business_customers)
+            total business
+          %dt Total Customers
+          %dd.total
+            %span.number.important
+              = commify(@lga.residential_customers + @lga.small_business_customers + @lga.large_business_customers)
 
-%script{:type=>"text/javascript"}
-	= "var lga = #{@lga.to_json}"
+  .column.span-24.last
+    %h2 Total Energy
+  .column.span-8
+    %dl
+      %dt Total Customers
+      %dd
+        %span.number.important
+          = commify(@lga.total_customers)
+        customers
+  .column.span-8
+    %dl
+      %dt Energy
+      %dd
+        %span.number.important
+          = commify(@lga.total_energy)
+        %acronym{ title: 'kilowatt hours' } kWh
+      %dd
+        %span.number.important
+          = commify(@lga.total_energy.to_f / @lga.total_customers)
+        %acronym{ title: 'kilowatt hours' } kWh
+        = '/ customer'
+  .column.span-8.last{ style: "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Residential|Small%20Business|Large%20Business&chdlp=b&chco=2fb755&chd=t:#{100 * @lga.total_residential_energy / @lga.total_energy},#{100 * @lga.small_business_energy / @lga.total_energy},#{100 * @lga.large_business_energy / @lga.total_energy}')" }
+  .column.span-12
+    %h2 Residential Energy
+    %dl{ style: "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Normal|Hot%20Water&chdlp=b&chco=2fb755&chd=t:#{100 * @lga.residential_energy / @lga.total_residential_energy},#{100 * @lga.residential_controlled_load_energy / @lga.total_residential_energy}')" }
+      %dt Residential
+      %dd
+        %span.number
+          = commify(@lga.residential_energy)
+        %acronym{ title: 'kilowatt hours' } kWh
+      %dd
+        %span.number
+          = commify(@lga.residential_customers)
+        customers
+      %dd
+        %span.number
+          = commify((@lga.residential_energy / @lga.residential_customers).to_i)
+        %acronym{ title: 'kilowatt hours' } kWh
+        = '/ customer'
+      %dt Residential Hot Water
+      %dd
+        %span.number
+          = commify(@lga.residential_controlled_load_energy)
+        %acronym{ title: 'kilowatt hours' } kWh
+      %dd
+        %span.number
+          = commify(@lga.residential_controlled_load_customers)
+        customers
+      %dt Total Residential
+      %dd
+        %span.number.important
+          = commify(@lga.residential_energy + @lga.residential_controlled_load_energy)
+        %acronym{ title: 'kilowatt hours' } kWh
+      %dd
+        %span.number.important
+          = commify((@lga.residential_energy + @lga.residential_controlled_load_energy) / @lga.residential_customers)
+        %acronym{ title: 'kilowatt hours' } kWh
+        = '/ customer'
+      %dd
+        %span.number.important
+          = commify((@lga.residential_energy + @lga.residential_controlled_load_energy) / @lga.population)
+        %acronym{ title: 'kilowatt hours' } kWh
+        = '/ resident'
+
+  .column.span-12.last
+    %h2 Business Energy
+    %dl{ style: "min-height: 200px; background: top right no-repeat url('https://chart.googleapis.com/chart?cht=p&chs=300x200&chdl=Small%20Business|Large%20Business&chdlp=b&chco=2fb755&chd=t:#{100 * @lga.small_business_energy / @lga.total_business_energy},#{100 * @lga.large_business_energy / @lga.total_business_energy}')" }
+      %dt Small Business
+      %dd
+        %span.number
+          = commify(@lga.small_business_energy)
+        %acronym{ title: 'kilowatt hours' } kWh
+      %dd
+        %span.number
+          = commify(@lga.small_business_customers)
+        customers
+      %dd
+        %span.number
+          = commify(@lga.small_business_energy.to_f / @lga.small_business_customers)
+        %acronym{ title: 'kilowatt hours' } kWh
+        = '/ customer'
+      %dt Large Business
+      %dd
+        %span.number
+          = commify(@lga.large_business_energy)
+        %acronym{ title: 'kilowatt hours' } kWh
+      %dd
+        %span.number
+          = commify(@lga.large_business_customers)
+        customers
+      %dd
+        %span.number
+          = commify(@lga.large_business_energy.to_f / @lga.large_business_customers)
+        %acronym{ title: 'kilowatt hours' } kWh
+        = '/ customer'
+      %dt Total Business
+      %dd
+        %span.number.important
+          = commify(@lga.small_business_energy + @lga.large_business_energy)
+        %acronym{ title: 'kilowatt hours' } kWh
+      %dd
+        %span.number.important
+          = commify(@lga.small_business_customers + @lga.large_business_customers)
+        customers
+      %dd
+        %span.number.important
+          = commify(@lga.large_business_energy.to_f / (@lga.small_business_customers + @lga.large_business_customers))
+        %acronym{ title: 'kilowatt hours' } kWh
+        = '/ customer'
+
+%script{ type: 'text/javascript' }
+  var lga = #{@lga.to_json}

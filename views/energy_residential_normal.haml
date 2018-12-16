@@ -1,61 +1,61 @@
 .container
-	.column.span-24.last
-		%h1
-			%a{:href=>"/energy"} Energy Comparisons
-			&rarr;
-			%a{:href=>"/energy/residential"} Residential
-			&rarr; Normal
-	.column.span-8
-		%h2 Energy
-		%table
-			%thead
-				%tr
-					%th Local Council
-					%th
-						Energy
-						(
-						%abbr{:title=>"kilowatt hours"} kWh
-						)
-			%tbody
-				- @lgas.sort{|x,y| y.residential_energy <=> x.residential_energy}.each do |lga|
-					%tr
-						%th
-							%a{:href=>"/lgas/#{lga.lga_code}"}
-								= lga.lga_name
-						%td.number
-							= commify lga.residential_energy
+  .column.span-24.last
+    %h1
+      %a{ href: '/energy' } Energy Comparisons
+      &rarr;
+      %a{ href: '/energy/residential' } Residential
+      &rarr; Normal
+  .column.span-8
+    %h2 Energy
+    %table
+      %thead
+        %tr
+          %th Local Council
+          %th
+            Energy
+            (
+            %abbr{ title: 'kilowatt hours' } kWh
+            )
+      %tbody
+        - sort_lgas_by(@lgas, :residential_energy).each do |lga|
+          %tr
+            %th
+              %a{ href: "/lgas/#{lga.lga_code}" }
+                = lga.lga_name
+            %td.number
+              = commify(lga.residential_energy)
 
-	.column.span-8
-		%h2 Energy per Resident
-		%table
-			%thead
-				%tr
-					%th Local Council
-					%th
-						%abbr{:title=>"kilowatt hours"} kWh
-						= "/ customer"
-			%tbody
-				- @lgas.sort{|x,y| (y.residential_energy / y.population) <=> (x.residential_energy / x.population)}.each do |lga|
-					%tr
-						%th
-							%a{:href=>"/lgas/#{lga.lga_code}"}
-								= lga.lga_name
-						%td.number
-							= commify lga.residential_energy / lga.population
-	.column.span-8.last
-		%h2 Energy per Customer
-		%table
-			%thead
-				%tr
-					%th Local Council
-					%th
-						%abbr{:title=>"kilowatt hours"} kWh
-						= "/ customer"
-			%tbody
-				- @lgas.sort{|x,y| (y.residential_energy / y.residential_customers) <=> (x.residential_energy / x.residential_customers)}.each do |lga|
-					%tr
-						%th
-							%a{:href=>"/lgas/#{lga.lga_code}"}
-								= lga.lga_name
-						%td.number
-							= commify lga.residential_energy / lga.residential_customers
+  .column.span-8
+    %h2 Energy per Resident
+    %table
+      %thead
+        %tr
+          %th Local Council
+          %th
+            %abbr{ title: 'kilowatt hours' } kWh
+            = '/ customer'
+      %tbody
+        - sort_lgas_by(@lgas, :residential_energy, :population).each do |lga|
+          %tr
+            %th
+              %a{ href: "/lgas/#{lga.lga_code}" }
+                = lga.lga_name
+            %td.number
+              = commify(lga.residential_energy / lga.population)
+  .column.span-8.last
+    %h2 Energy per Customer
+    %table
+      %thead
+        %tr
+          %th Local Council
+          %th
+            %abbr{ title: 'kilowatt hours' } kWh
+            = '/ customer'
+      %tbody
+        - sort_lgas_by(@lgas, :residential_energy, :residential_customers).each do |lga|
+          %tr
+            %th
+              %a{ href: "/lgas/#{lga.lga_code}" }
+                = lga.lga_name
+            %td.number
+              = commify(lga.residential_energy / lga.residential_customers)

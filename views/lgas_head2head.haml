@@ -1,77 +1,77 @@
 .container.head2head
-	%h1
-		%a{:href=>"/lgas"} Local Government Area
-		&rarr; Head to Head &rarr;
-		%a{:href=>"/lgas/#{@lga1.lga_code}"}
-			= @lga1.lga_name
-		%abbr{:title=>"versus"} v
-		%a{:href=>"/lgas/#{@lga2.lga_code}"}
-			= @lga2.lga_name
-		#update
-			edit
-		%form{ :action => "/lgas/", :method => "get", :id => 'lgaH2H' }
-			%fieldset
-				%legend
-					Compare <abbr title="Local Government Area">LGA</abbr>s
-				.input.select
-					%select{ :name => "lgas[]" }
-						- @lgas.each do |lga|
-							- if lga.lga_code == @lga1.lga_code
-								%option{ :value => lga.lga_code.to_s, :selected => "#{'selected' }" }
-									= lga.lga_name
-							- else
-								%option{ :value => lga.lga_code.to_s }
-									= lga.lga_name
-				%abbr{:title=>"versus"} v
-				.input.select
-					%select{ :name => "lgas[]" }
-						- @lgas.each do |lga|
-							- if lga.lga_code == @lga2.lga_code
-								%option{ :value => lga.lga_code.to_s, :selected => "#{'selected' }" }
-									= lga.lga_name
-							- else
-								%option{ :value => lga.lga_code.to_s }
-									= lga.lga_name
-				.input.submit
-					%input{ :type => "submit", :value => "Update" }
-	
+  %h1
+    %a{ href: '/lgas' } Local Government Area
+    &rarr; Head to Head &rarr;
+    %a{ href: "/lgas/#{@lga1.lga_code}" }
+      = @lga1.lga_name
+    %abbr{ title: 'versus' } v
+    %a{ href: "/lgas/#{@lga2.lga_code}" }
+      = @lga2.lga_name
+    #update
+      edit
+    %form{ action: '/lgas/', method: 'get', id: 'lgaH2H' }
+      %fieldset
+        %legend
+          Compare <abbr title='Local Government Area'>LGA</abbr>s
+        .input.select
+          %select{ name: 'lgas[]' }
+            - @lgas.each do |lga|
+              - if lga.lga_code == @lga1.lga_code
+                %option{ value: lga.lga_code.to_s, selected: 'selected' }
+                  = lga.lga_name
+              - else
+                %option{ value: lga.lga_code.to_s }
+                  = lga.lga_name
+        %abbr{ title: 'versus' } v
+        .input.select
+          %select{ name: 'lgas[]' }
+            - @lgas.each do |lga|
+              - if lga.lga_code == @lga2.lga_code
+                %option{ value: lga.lga_code.to_s, selected: 'selected' }
+                  = lga.lga_name
+              - else
+                %option{ value: lga.lga_code.to_s }
+                  = lga.lga_name
+        .input.submit
+          %input{ type: 'submit', value: 'Update' }
+
 .container.head2head
-	%dl.control
-		%dt Map comparison by:
-		%dd
-			%a{ :href => '#population' } Population
-		%dd
-			%a{ :href => '#total_customers' } Total Energy
-		%dd
-			%a{ :href => '#total_energy' } Total Customers
-		%dd
-			%a{ :href => '#total_energy_per_customer' } Energy per Customer
-		%dd
-			%a{ :href => '#total_energy_per_resident' } Energy per Resident
-		%dd.separator
-			%a{ :href => '#total_residential_energy' } Residential Energy
-		%dd
-			%a{ :href => '#residential_customers' } Residential Customers
-		%dd
-			%a{ :href => '#total_residential_energy_per_customer' } Residential Energy per Customer
-		%dd
-			%a{ :href => '#total_residential_energy_per_resident' } Residential Energy per Resident
-		%dd.separator
-			%a{ :href => '#total_business_energy' } Business Energy
-		%dd
-			%a{ :href => '#total_business_customers' } Business Customers
-		%dd
-			%a{ :href => '#total_business_energy_per_customer' } Business Energy per Customer
-		
-	.column.span-12
-		#lga1.lga
-			= partial(:'partials/head2head', :locals => {:lga => @lga1, :lga_stats => @lgas_stats})
-	.column.span-12.last
-		#lga2.lga
-			= partial(:'partials/head2head', :locals => {:lga => @lga2, :lga_stats => @lgas_stats})
-			%script{:type=>'text/javascript'}
-				
-%script{:type=>'text/javascript'}
-	= "var lga1 = #{@lga1.to_json}; var map1, bounds1;"
-	= "var lga2 = #{@lga2.to_json}; var map2, bounds2;"
-	= "var lga_stats = #{@lgas_stats.to_json}"
+  %dl.control
+    %dt Map comparison by:
+    %dd
+      %a{ href: '#population' } Population
+    %dd
+      %a{ href: '#total_customers' } Total Energy
+    %dd
+      %a{ href: '#total_energy' } Total Customers
+    %dd
+      %a{ href: '#total_energy_per_customer' } Energy per Customer
+    %dd
+      %a{ href: '#total_energy_per_resident' } Energy per Resident
+    %dd.separator
+      %a{ href: '#total_residential_energy' } Residential Energy
+    %dd
+      %a{ href: '#residential_customers' } Residential Customers
+    %dd
+      %a{ href: '#total_residential_energy_per_customer' } Residential Energy per Customer
+    %dd
+      %a{ href: '#total_residential_energy_per_resident' } Residential Energy per Resident
+    %dd.separator
+      %a{ href: '#total_business_energy' } Business Energy
+    %dd
+      %a{ href: '#total_business_customers' } Business Customers
+    %dd
+      %a{ href: '#total_business_energy_per_customer' } Business Energy per Customer
+
+  .column.span-12
+    .lga#lga1
+      = partial('partials/head2head', locals: { lga: @lga1, lga_stats: @lgas_stats })
+  .column.span-12.last
+    .lga#lga2
+      = partial('partials/head2head', locals: { lga: @lga2, lga_stats: @lgas_stats })
+      %script{ type: 'text/javascript' }
+
+%script{ type: 'text/javascript' }
+  var lga1 = #{@lga1.to_json}; var map1, bounds1;
+  var lga2 = #{@lga2.to_json}; var map2, bounds2;
+  var lga_stats = #{@lgas_stats.to_json}

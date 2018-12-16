@@ -1,12 +1,13 @@
-- value ||= 0
-- details ||= nil
-- color ||= false
-- unless value == 0 || details.nil?
-	- percent = (value).to_f / (details[:max])
-	- if color
-		%span.percentage.color{:style=>"width: #{100*percent}%; background: ##{color_gradient(value, details)}"}
-			&nbsp;
-	- else
-		%span.percentage{:style=>"width: #{100*percent}%;"}
-			&nbsp;
-- else
+:ruby
+  value ||= 0
+  details ||= nil
+  color ||= false
+
+- unless value.zero? || details.nil?
+  - percent = value.to_f / details[:max]
+  - if color
+    %span.percentage.color{ style: "width: #{100 * percent}%; background: ##{color_gradient(value, details)}" }
+      &nbsp;
+  - else
+    %span.percentage{ style: "width: #{100 * percent}%;" }
+      &nbsp;
