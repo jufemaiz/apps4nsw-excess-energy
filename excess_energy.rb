@@ -3,7 +3,7 @@
 # excess_energy.rb
 
 require 'rubygems'
-require 'dotenv/load'
+require 'dotenv/load' if ENV['RACK_ENV'] == 'development'
 require 'json'
 require 'nokogiri'
 require 'open-uri'
