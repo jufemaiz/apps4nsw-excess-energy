@@ -15,7 +15,7 @@ require 'sass'
 
 set :haml, format: :html5
 
-require './lga-model'
+require './models/lga'
 require './partials'
 
 require './helpers'
@@ -27,7 +27,7 @@ require './helpers'
 # ----------------------------------
 
 get '/' do
-  @lgas = get_lgas
+  @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
   haml :index
@@ -38,7 +38,7 @@ end
 # ----------------------------------
 
 get %r{/map(\/)?} do
-  @lgas = get_lgas
+  @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
   haml :map
@@ -57,7 +57,7 @@ get %r{/lgas(\/)?} do
     end
   end
 
-  @lgas = get_lgas
+  @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
   haml :lgas_index
@@ -72,7 +72,7 @@ get %r{/lgas/(\d{5})(\/.*)?} do
     redirect "/lgas/#{params[:captures][0]},#{params[:lgas]}"
   end
 
-  @lgas = get_lgas
+  @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
   @lgas.each do |lga|
@@ -91,7 +91,7 @@ end
 # ----------------------------------
 
 get %r{/lgas/(\d{5}),(\d{5})(\/.*)?} do
-  @lgas = get_lgas
+  @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
   @lgas.each do |lga|
@@ -120,7 +120,7 @@ end
 # ----------------------------------
 
 get %r{/energy(\/)?} do
-  @lgas = get_lgas
+  @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
   haml :energy
@@ -131,7 +131,7 @@ end
 # ----------------------------------
 
 get %r{/energy/residential(\/)?} do
-  @lgas = get_lgas
+  @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
   haml :energy_residential
@@ -142,7 +142,7 @@ end
 # ----------------------------------
 
 get %r{/energy/residential/normal(\/)?} do
-  @lgas = get_lgas
+  @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
   haml :energy_residential_normal
@@ -153,7 +153,7 @@ end
 # ----------------------------------
 
 get %r{/energy/residential/hot-water(\/)?} do
-  @lgas = get_lgas
+  @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
   haml :energy_residential_hot_water
@@ -164,7 +164,7 @@ end
 # ----------------------------------
 
 get %r{/energy/business(\/)?} do
-  @lgas = get_lgas
+  @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
   haml :energy_business
@@ -175,7 +175,7 @@ end
 # ----------------------------------
 
 get %r{/energy/business/small(\/)?} do
-  @lgas = get_lgas
+  @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
   haml :energy_business_small
@@ -186,7 +186,7 @@ end
 # ----------------------------------
 
 get %r{/energy/business/large(\/)?} do
-  @lgas = get_lgas
+  @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
   haml :energy_business_large
@@ -198,23 +198,8 @@ end
 
 get %r{/polygons(\/(\d{5}))?.json} do
   @row_number = 0
-  @lgas_header = []
-  @lgas = []
+  @lgas = LGA.all
   @params = params
-
-  # For each line
-  IO.foreach('public/csv/2010-consumption.csv') do |f|
-    @row_number += 1
-    if @row_number == 1
-      CSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      CSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header, row)
-      end
-    end
-  end
 
   # Read XML
   f = File.open('public/csv/LGA10aAust.kml')
