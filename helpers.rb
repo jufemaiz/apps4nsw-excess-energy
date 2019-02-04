@@ -105,6 +105,7 @@ helpers do
   # @param [Array<Numeric>] arg
   # @return Numeric
   def variance(arg)
+    m = arg.sum.to_f / arg.length.to_f
     arg.inject(0) { |accum, i| accum + (i - m) ** 2 } / (arg.length - 1).to_f
   end
 
