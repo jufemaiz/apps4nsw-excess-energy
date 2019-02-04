@@ -15,7 +15,7 @@ require 'sass'
 
 set :haml, format: :html5
 
-require './lga-model'
+require './model/lga'
 require './partials'
 
 require './helpers'
@@ -198,23 +198,8 @@ end
 
 get %r{/polygons(\/(\d{5}))?.json} do
   @row_number = 0
-  @lgas_header = []
-  @lgas = []
+  @lgas = get_lgas
   @params = params
-
-  # For each line
-  IO.foreach('public/csv/2010-consumption.csv') do |f|
-    @row_number += 1
-    if @row_number == 1
-      CSV.parse(f) do |row|
-        @lgas_header = row
-      end
-    elsif @row_number > 1
-      CSV.parse(f) do |row|
-        @lgas.push LGA.new(@lgas_header, row)
-      end
-    end
-  end
 
   # Read XML
   f = File.open('public/csv/LGA10aAust.kml')
