@@ -29,7 +29,7 @@ GEM
       ast (~> 2.4.0)
     powerpack (0.1.2)
     puma (3.12.4)
-    rack (2.0.8)
+    rack (2.1.4)
     rack-protection (2.0.5)
       rack
     rainbow (3.0.0)
