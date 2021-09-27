@@ -6,7 +6,7 @@ source 'https://rubygems.org' do
   gem 'coffee-script'
   gem 'haml'
   gem 'linguistics'
-  gem 'nokogiri', '~> 1.10'
+  gem 'nokogiri', '~> 1.12'
   gem 'puma'
   gem 'rack'
   gem 'sass'
