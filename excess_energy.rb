@@ -37,7 +37,7 @@ end
 # Map
 # ----------------------------------
 
-get %r{/map(\/)?} do
+get %r{/map(/)?} do
   @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
@@ -48,12 +48,11 @@ end
 # LGA Browse
 # ----------------------------------
 
-get %r{/lgas(\/)?} do
+get %r{/lgas(/)?} do
   unless params[:lgas].nil?
     if params[:lgas].length == 1
       redirect "/lgas/#{params[:lgas][0]}"
-    elsif
-      redirect "/lgas/#{params[:lgas][0]}?lgas=#{params[:lgas][1]}"
+    elsif redirect "/lgas/#{params[:lgas][0]}?lgas=#{params[:lgas][1]}"
     end
   end
 
@@ -67,10 +66,8 @@ end
 # LGA Show
 # ----------------------------------
 
-get %r{/lgas/(\d{5})(\/.*)?} do
-  unless params[:lgas].nil?
-    redirect "/lgas/#{params[:captures][0]},#{params[:lgas]}"
-  end
+get %r{/lgas/(\d{5})(/.*)?} do
+  redirect "/lgas/#{params[:captures][0]},#{params[:lgas]}" unless params[:lgas].nil?
 
   @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
@@ -90,7 +87,7 @@ end
 # LGA - Head to Head
 # ----------------------------------
 
-get %r{/lgas/(\d{5}),(\d{5})(\/.*)?} do
+get %r{/lgas/(\d{5}),(\d{5})(/.*)?} do
   @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
@@ -119,7 +116,7 @@ end
 # Energy - Total
 # ----------------------------------
 
-get %r{/energy(\/)?} do
+get %r{/energy(/)?} do
   @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
@@ -130,7 +127,7 @@ end
 # Energy - Residential - Total
 # ----------------------------------
 
-get %r{/energy/residential(\/)?} do
+get %r{/energy/residential(/)?} do
   @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
@@ -141,7 +138,7 @@ end
 # Energy - Residential - Normal
 # ----------------------------------
 
-get %r{/energy/residential/normal(\/)?} do
+get %r{/energy/residential/normal(/)?} do
   @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
@@ -152,7 +149,7 @@ end
 # Energy - Residential - Hot Water
 # ----------------------------------
 
-get %r{/energy/residential/hot-water(\/)?} do
+get %r{/energy/residential/hot-water(/)?} do
   @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
@@ -163,7 +160,7 @@ end
 # Energy - Business - Total
 # ----------------------------------
 
-get %r{/energy/business(\/)?} do
+get %r{/energy/business(/)?} do
   @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
@@ -174,7 +171,7 @@ end
 # Energy - Business - Small
 # ----------------------------------
 
-get %r{/energy/business/small(\/)?} do
+get %r{/energy/business/small(/)?} do
   @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
@@ -185,7 +182,7 @@ end
 # Energy - Business - Large
 # ----------------------------------
 
-get %r{/energy/business/large(\/)?} do
+get %r{/energy/business/large(/)?} do
   @lgas = LGA.all
   @lgas_stats = lgas_stats(@lgas)
 
@@ -196,7 +193,7 @@ end
 # SCSS Custom Styling
 # ----------------------------------
 
-get %r{/polygons(\/(\d{5}))?.json} do
+get %r{/polygons(/(\d{5}))?.json} do
   content_type :json
 
   @row_number = 0
@@ -218,14 +215,14 @@ get %r{/polygons(\/(\d{5}))?.json} do
     if !params[:captures].nil? && !params[:captures][1].nil?
       if params[:captures][1].to_i == lga_code
         @placemarks[lga_code] = p.xpath('.//coordinates').map do |c|
-          c.content.split(' ').map do |m|
+          c.content.split.map do |m|
             [m.split(',')[1].to_f, m.split(',')[0].to_f]
           end
         end
       end
     elsif @lgas_numbers.include? lga_code.to_i
       @placemarks[lga_code] = p.xpath('.//coordinates').map do |c|
-        c.content.split(' ').map do |m|
+        c.content.split.map do |m|
           [m.split(',')[1].to_f, m.split(',')[0].to_f]
         end
       end
@@ -244,13 +241,13 @@ get '/css/energy.css' do
   sass :energy
 end
 
-get %r{(\/js\/[a-zA-Z0-9_\/\-\.]+\.coffee)\.js} do |filename|
+get %r{(/js/[a-zA-Z0-9_/\-.]+\.coffee)\.js} do |filename|
   content_type :js
   puts options.public + filename
   base_name = options.public + filename
   if File.exist? base_name
-    CoffeeScript.compile File.open(base_name, 'r', &:read)
+    CoffeeScript.compile File.read(base_name)
   else
-    File.open(base_name + '.js', 'r', &:read)
+    File.read("#{base_name}.js")
   end
 end
