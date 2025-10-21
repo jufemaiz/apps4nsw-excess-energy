@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
+require 'json'
 require 'rubygems'
 require 'open-uri'
-require 'json'
 
 # [LGA]
 #
@@ -18,7 +18,7 @@ class LGA
       header = []
       lgas = []
       # For each line
-      IO.foreach('public/csv/2010-consumption.csv') do |f|
+      File.foreach('public/csv/2010-consumption.csv') do |f|
         row_n += 1
         CSV.parse(f) do |row|
           header = row if row_n == 1
@@ -37,11 +37,11 @@ class LGA
     @array_values = array_values unless array_values.nil?
     @hash = {}
     @array_header.each_index do |i|
-      if @array_header[i].tr(' ', '_').casecmp('lga').zero?
-        @hash[@array_header[i].tr(' ', '_').downcase] = @array_values[i]
-      else
-        @hash[@array_header[i].tr(' ', '_').downcase] = @array_values[i].to_i
-      end
+      @hash[@array_header[i].tr(' ', '_').downcase] = if @array_header[i].tr(' ', '_').casecmp('lga').zero?
+                                                        @array_values[i]
+                                                      else
+                                                        @array_values[i].to_i
+                                                      end
     end
     to_object(@hash) unless array_header.nil? || array_values.nil?
   end
@@ -68,7 +68,7 @@ class LGA
   #
   # @param [Hash] args
   # @return [String]
-  def to_json(*args)
+  def to_json(*)
     @hash.merge(
       total_energy: total_energy,
       total_customers: total_customers,
@@ -90,7 +90,7 @@ class LGA
       total_business_energy_per_customer: total_business_energy_per_customer,
       small_business_energy_per_customer: small_business_energy_per_customer,
       large_business_energy_per_customer: large_business_energy_per_customer
-    ).to_json(*args)
+    ).to_json(*)
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
@@ -161,7 +161,7 @@ class LGA
   #
   # @return [Numeric]
   def residential_controlled_load_energy_per_customer
-    residential_controlled_load_energy.to_f / residential_controlled_load_customers # rubocop:disable Metrics/LineLength
+    residential_controlled_load_energy.to_f / residential_controlled_load_customers
   end
 
   #
@@ -210,6 +210,6 @@ class LGA
   #
   # @return [Numeric]
   def lga_name
-    lga.split(' ').collect(&:capitalize).join(' ')
+    lga.split.collect(&:capitalize).join(' ')
   end
 end
