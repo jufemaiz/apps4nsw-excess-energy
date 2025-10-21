@@ -19,8 +19,12 @@ GEM
     execjs (2.10.0)
     ffi (1.17.2)
     ffi (1.17.2-x86_64-darwin)
+    ffi (1.17.2-x86_64-linux-gnu)
     forwardable-extended (2.6.0)
     google-protobuf (4.33.0-x86_64-darwin)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.33.0-x86_64-linux-gnu)
       bigdecimal
       rake (>= 13)
     haml (6.3.0)
@@ -75,6 +79,8 @@ GEM
     nio4r (2.7.4)
     nokogiri (1.18.10-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.18.10-x86_64-linux-gnu)
+      racc (~> 1.4)
     pathutil (0.16.2)
       forwardable-extended (~> 2.6)
     public_suffix (6.0.2)
@@ -101,6 +107,8 @@ GEM
       sass-listen (~> 4.0.0)
     sass-embedded (1.93.2-x86_64-darwin)
       google-protobuf (~> 4.31)
+    sass-embedded (1.93.2-x86_64-linux-gnu)
+      google-protobuf (~> 4.31)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -122,6 +130,7 @@ GEM
 PLATFORMS
   x86_64-darwin-22
   x86_64-darwin-24
+  x86_64-linux
 
 DEPENDENCIES
   dotenv
