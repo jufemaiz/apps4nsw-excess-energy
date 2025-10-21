@@ -13,14 +13,14 @@ require 'coffee-script'
 require 'haml'
 require 'sass'
 
-set :haml, format: :html5
+set :haml, format: :html5, escape_html: false
 
 require './models/lga'
 require './partials'
 
 require './helpers'
 
-@@local = false
+@local = false
 
 # ----------------------------------
 # Homepage
@@ -197,6 +197,8 @@ end
 # ----------------------------------
 
 get %r{/polygons(\/(\d{5}))?.json} do
+  content_type :json
+
   @row_number = 0
   @lgas = LGA.all
   @params = params
@@ -212,7 +214,6 @@ get %r{/polygons(\/(\d{5}))?.json} do
   @row_number = 0
   doc.xpath('//Placemark').each do |p|
     @row_number += 1
-    # if @row_number < 10
     lga_code = p.xpath(".//Data[@name='LGA_CODE10']//value")[0].content.to_i
     if !params[:captures].nil? && !params[:captures][1].nil?
       if params[:captures][1].to_i == lga_code
@@ -229,7 +230,6 @@ get %r{/polygons(\/(\d{5}))?.json} do
         end
       end
     end
-    # end
   end
   @placemarks = [@placemarks]
 
