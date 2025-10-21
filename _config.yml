@@ -1,0 +1,30 @@
+---
+title: "Excess Energy"
+description: "Energy consumption data for Local Government Areas"
+url: "https://jufemaiz.github.io"
+baseurl: "/apps4nsw-excess-energy"
+
+gmaps_api_key: "YOUR_GOOGLE_MAPS_API_KEY"
+
+plugins:
+  - jekyll-sass-converter
+  - jekyll-coffeescript
+
+sass:
+  sass_dir: _sass
+  style: compressed
+
+coffeescript:
+  path: assets/js
+
+collections:
+  lgas:
+    output: true
+    permalink: /lgas/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "lgas"
+    values:
+      layout: "lga"
